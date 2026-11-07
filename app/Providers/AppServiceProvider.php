@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -24,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->configureModels();
     }
 
     /**
@@ -46,5 +50,16 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null,
         );
+    }
+
+    /**
+     * Configure Eloquent model behaviors.
+     * Strict mode in non-production: catches N+1, mass assignment, lazy loading issues.
+     */
+    protected function configureModels(): void
+    {
+        Model::shouldBeStrict(! app()->isProduction());
+        Model::preventLazyLoading(! app()->isProduction());
+        Model::preventAccessingMissingAttributes(! app()->isProduction());
     }
 }
