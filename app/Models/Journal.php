@@ -39,8 +39,8 @@ class Journal extends Model
     protected function casts(): array
     {
         return [
-            'date'         => 'date',
-            'status'       => JournalStatus::class,
+            'date' => 'date',
+            'status' => JournalStatus::class,
             'validated_at' => 'datetime',
         ];
     }
@@ -55,4 +55,3 @@ class Journal extends Model
         $query->where('status', JournalStatus::Pending);
     }
 }
-

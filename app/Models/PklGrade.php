@@ -32,8 +32,8 @@ class PklGrade extends Model
     {
         return [
             'industry_grade' => 'decimal:2',
-            'teacher_grade'  => 'decimal:2',
-            'final_grade'    => 'decimal:2',
+            'teacher_grade' => 'decimal:2',
+            'final_grade' => 'decimal:2',
         ];
     }
 
@@ -58,4 +58,3 @@ class PklGrade extends Model
         );
     }
 }
-

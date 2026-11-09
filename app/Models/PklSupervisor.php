@@ -39,4 +39,3 @@ class PklSupervisor extends Model
         return $this->belongsTo(IndustrySupervisor::class);
     }
 }
-

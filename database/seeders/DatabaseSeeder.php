@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             MajorSeeder::class,
             SettingSeeder::class,
             AdminUserSeeder::class,
+            IndustrySeeder::class,
+            ClassroomSeeder::class,
+            TeacherSeeder::class,
+            StudentSeeder::class,
         ]);
     }
 }

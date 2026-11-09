@@ -33,8 +33,8 @@ class AcademicYear extends Model
     {
         return [
             'start_date' => 'date',
-            'end_date'   => 'date',
-            'is_active'  => 'boolean',
+            'end_date' => 'date',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -56,4 +56,3 @@ class AcademicYear extends Model
         $query->where('is_active', true);
     }
 }
-

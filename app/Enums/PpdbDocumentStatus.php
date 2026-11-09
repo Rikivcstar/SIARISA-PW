@@ -6,14 +6,14 @@ namespace App\Enums;
 
 enum PpdbDocumentStatus: string
 {
-    case Pending  = 'pending';
+    case Pending = 'pending';
     case Accepted = 'accepted';
     case Rejected = 'rejected';
 
     public function label(): string
     {
-        return match($this) {
-            self::Pending  => 'Menunggu Verifikasi',
+        return match ($this) {
+            self::Pending => 'Menunggu Verifikasi',
             self::Accepted => 'Diterima',
             self::Rejected => 'Ditolak',
         };
@@ -21,11 +21,10 @@ enum PpdbDocumentStatus: string
 
     public function color(): string
     {
-        return match($this) {
-            self::Pending  => 'yellow',
+        return match ($this) {
+            self::Pending => 'yellow',
             self::Accepted => 'green',
             self::Rejected => 'red',
         };
     }
 }
-

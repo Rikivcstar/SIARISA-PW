@@ -41,9 +41,9 @@ class PklApplication extends Model
     protected function casts(): array
     {
         return [
-            'status'     => PklApplicationStatus::class,
+            'status' => PklApplicationStatus::class,
             'start_date' => 'date',
-            'end_date'   => 'date',
+            'end_date' => 'date',
         ];
     }
 
@@ -87,4 +87,3 @@ class PklApplication extends Model
         $query->where('status', PklApplicationStatus::Approved);
     }
 }
-

@@ -27,4 +27,3 @@ class MajorSeeder extends Seeder
         $this->command->info('Majors seeded: DKV, MPLB, LPS.');
     }
 }
-

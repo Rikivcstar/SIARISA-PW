@@ -45,4 +45,3 @@ class IndustrySupervisor extends Model
         return $this->hasMany(PklSupervisor::class);
     }
 }
-

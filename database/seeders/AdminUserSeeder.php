@@ -15,16 +15,15 @@ class AdminUserSeeder extends Seeder
         $admin = User::firstOrCreate(
             ['email' => 'admin@siarisa.sch.id'],
             [
-                'name'     => 'Administrator',
-                'email'    => 'admin@siarisa.sch.id',
+                'name' => 'Administrator',
+                'email' => 'admin@siarisa.sch.id',
                 'password' => Hash::make('password'),
             ],
         );
 
         $admin->assignRole('admin');
 
-        $this->command->info("Admin user seeded: admin@siarisa.sch.id");
-        $this->command->warn("IMPORTANT: Change the admin password after first login!");
+        $this->command->info('Admin user seeded: admin@siarisa.sch.id');
+        $this->command->warn('IMPORTANT: Change the admin password after first login!');
     }
 }
-

@@ -10,23 +10,31 @@ export function UserInfo({
     showEmail?: boolean;
 }) {
     const getInitials = useInitials();
+    const roles = (user.roles as string[]) || [];
+
+    const getRoleName = () => {
+        if (roles.includes('admin')) return 'Administrator';
+        if (roles.includes('headmaster')) return 'Kepala Sekolah';
+        if (roles.includes('teacher')) return 'Guru Pembimbing';
+        if (roles.includes('student')) return 'Siswa PKL';
+        if (roles.includes('industry_supervisor')) return 'Pembimbing DU/DI';
+        return 'Pengguna';
+    };
 
     return (
-        <>
-            <Avatar className="h-8 w-8 overflow-hidden rounded-full">
+        <div className="flex items-center gap-2.5 min-w-0">
+            <Avatar className="h-8 w-8 overflow-hidden rounded-full ring-1 ring-sidebar-border">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                <AvatarFallback className="rounded-full bg-[#D2F442] text-[#16181D] font-black text-xs">
                     {getInitials(user.name)}
                 </AvatarFallback>
             </Avatar>
-            <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                {showEmail && (
-                    <span className="truncate text-xs text-muted-foreground">
-                        {user.email}
-                    </span>
-                )}
+            <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                <span className="truncate font-semibold text-sidebar-foreground">{user.name}</span>
+                <span className="truncate text-xs text-muted-foreground font-medium">
+                    {showEmail ? user.email : getRoleName()}
+                </span>
             </div>
-        </>
+        </div>
     );
 }

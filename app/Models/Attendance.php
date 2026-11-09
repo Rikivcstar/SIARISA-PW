@@ -37,7 +37,7 @@ class Attendance extends Model
     protected function casts(): array
     {
         return [
-            'date'   => 'date',
+            'date' => 'date',
             'status' => AttendanceStatus::class,
         ];
     }
@@ -47,4 +47,3 @@ class Attendance extends Model
         return $this->belongsTo(PklApplication::class);
     }
 }
-

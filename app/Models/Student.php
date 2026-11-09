@@ -74,4 +74,3 @@ class Student extends Model
         $query->where('status', 'active');
     }
 }
-

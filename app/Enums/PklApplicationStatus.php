@@ -12,20 +12,19 @@ enum PklApplicationStatus: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::Submitted => 'Diajukan',
-            self::Approved  => 'Disetujui',
-            self::Rejected  => 'Ditolak',
+            self::Approved => 'Disetujui',
+            self::Rejected => 'Ditolak',
         };
     }
 
     public function color(): string
     {
-        return match($this) {
+        return match ($this) {
             self::Submitted => 'yellow',
-            self::Approved  => 'green',
-            self::Rejected  => 'red',
+            self::Approved => 'green',
+            self::Rejected => 'red',
         };
     }
 }
-
