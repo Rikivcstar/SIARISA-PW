@@ -1,8 +1,6 @@
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import {
     faBuilding,
-    faCheckCircle,
-    faCircleExclamation,
     faEnvelope,
     faLocationDot,
     faMagnifyingGlass,
@@ -13,7 +11,7 @@ import {
     faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -24,7 +22,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
+import { useSiarisaAlert } from '@/components/siarisa-alert';
 interface IndustryItem {
     id: number;
     name: string;
@@ -69,11 +67,11 @@ export default function MasterIndustries({ industries, filters }: Props) {
     };
 
     const isAdmin = auth.user.roles?.includes('admin');
+    const alert = useSiarisaAlert();
 
     const [searchQuery, setSearchQuery] = useState(filters.search || '');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingIndustry, setEditingIndustry] = useState<IndustryItem | null>(null);
-    const [deletingIndustry, setDeletingIndustry] = useState<IndustryItem | null>(null);
 
     const { data, setData, post, put, processing, errors, reset, clearErrors } = useForm({
         name: '',
@@ -138,11 +136,18 @@ export default function MasterIndustries({ industries, filters }: Props) {
         }
     };
 
-    const handleDelete = () => {
-        if (!deletingIndustry) return;
-        router.delete(`/master/industries/${deletingIndustry.id}`, {
-            onSuccess: () => setDeletingIndustry(null),
-        });
+    const handleDelete = (industry: IndustryItem) => {
+        alert.deleteConfirm(
+            'Hapus Data DUDI?',
+            `Apakah Anda yakin ingin menghapus mitra "${industry.name}"? Data tidak dapat dikembalikan.`,
+            () => {
+                router.delete(`/master/industries/${industry.id}`, {
+                    onSuccess: () => {
+                        alert.success('Berhasil Dihapus!', `Data mitra "${industry.name}" telah dihapus.`);
+                    },
+                });
+            },
+        );
     };
 
     const handleSearch = (e: React.FormEvent) => {
@@ -167,25 +172,7 @@ export default function MasterIndustries({ industries, filters }: Props) {
             <Head title="Master DUDI / Industri Mitra - SIARISA" />
 
             <div className="flex flex-col gap-6 p-4 md:p-8 max-w-7xl mx-auto w-full bg-[#F6F7FA] min-h-screen">
-                {/* Flash Success Notification */}
-                {flash?.success && (
-                    <div className="flex items-center gap-3 rounded-2xl border border-[#181A20]/10 bg-white p-4 text-sm text-[#181A20] shadow-xs">
-                        <div className="flex size-7 items-center justify-center rounded-full bg-[#D2F442] text-[#181A20] shrink-0 font-bold">
-                            <FontAwesomeIcon icon={faCheckCircle} className="size-3.5" />
-                        </div>
-                        <span className="font-bold">{flash.success}</span>
-                    </div>
-                )}
-
-                {/* Flash Error Notification */}
-                {flash?.error && (
-                    <div className="flex items-center gap-3 rounded-2xl border border-[#FF6B4A]/20 bg-white p-4 text-sm text-[#FF6B4A] shadow-xs">
-                        <div className="flex size-7 items-center justify-center rounded-full bg-[#FF6B4A]/15 text-[#FF6B4A] shrink-0 font-bold">
-                            <FontAwesomeIcon icon={faCircleExclamation} className="size-3.5" />
-                        </div>
-                        <span className="font-bold">{flash.error}</span>
-                    </div>
-                )}
+                {/* Flash messages are shown via SiarisaAlert in useEffect */}
 
                 {/* Header Row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -373,7 +360,8 @@ export default function MasterIndustries({ industries, filters }: Props) {
                                                             <FontAwesomeIcon icon={faPenToSquare} className="size-3.5" />
                                                         </button>
                                                         <button
-                                                            onClick={() => setDeletingIndustry(item)}
+                                                            type="button"
+                                                            onClick={() => handleDelete(item)}
                                                             className="flex size-8 items-center justify-center rounded-xl text-[#5A6272] hover:bg-[#FF6B4A]/10 hover:text-[#FF6B4A] transition-colors cursor-pointer"
                                                             title="Hapus Data"
                                                         >
@@ -568,37 +556,6 @@ export default function MasterIndustries({ industries, filters }: Props) {
                             </button>
                         </DialogFooter>
                     </form>
-                </DialogContent>
-            </Dialog>
-
-            {/* Dialog Konfirmasi Hapus */}
-            <Dialog open={Boolean(deletingIndustry)} onOpenChange={(open) => !open && setDeletingIndustry(null)}>
-                <DialogContent className="sm:max-w-md rounded-3xl p-6">
-                    <DialogHeader>
-                        <DialogTitle className="text-base font-black text-[#FF6B4A] flex items-center gap-2">
-                            <FontAwesomeIcon icon={faTrash} />
-                            <span>Konfirmasi Hapus Data DUDI</span>
-                        </DialogTitle>
-                        <DialogDescription className="text-xs text-[#5A6272] pt-1">
-                            Apakah Anda yakin ingin menghapus mitra <strong>{deletingIndustry?.name}</strong>? Tindakan ini tidak dapat dibatalkan.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter className="gap-2 sm:gap-0 pt-3">
-                        <button
-                            type="button"
-                            onClick={() => setDeletingIndustry(null)}
-                            className="rounded-xl border border-[#E9EBEF] px-4 py-2 text-sm font-bold text-[#5A6272] hover:bg-[#F6F7FA] transition-colors cursor-pointer"
-                        >
-                            Batal
-                        </button>
-                        <button
-                            type="button"
-                            onClick={handleDelete}
-                            className="rounded-xl bg-[#FF6B4A] hover:bg-[#E55A3B] px-4 py-2 text-sm font-extrabold text-white shadow-xs transition-colors cursor-pointer"
-                        >
-                            Hapus Data
-                        </button>
-                    </DialogFooter>
                 </DialogContent>
             </Dialog>
         </>

@@ -34,4 +34,3 @@ class StudentPolicy
         return $user->hasRole('admin');
     }
 }
-

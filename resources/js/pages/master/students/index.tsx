@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useSiarisaAlert } from '@/components/siarisa-alert';
 
 interface UserData {
     id: number;
@@ -109,6 +110,7 @@ export default function MasterStudents({
     };
 
     const isAdmin = auth.user.roles?.includes('admin');
+    const alert = useSiarisaAlert();
 
     const [searchQuery, setSearchQuery] = useState(filters.search || '');
     const [selectedMajor, setSelectedMajor] = useState(String(filters.major_id || ''));
@@ -117,7 +119,6 @@ export default function MasterStudents({
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingStudent, setEditingStudent] = useState<StudentItem | null>(null);
-    const [deletingStudent, setDeletingStudent] = useState<StudentItem | null>(null);
 
     const { data, setData, post, put, processing, errors, reset, clearErrors } = useForm({
         name: '',
@@ -188,11 +189,14 @@ export default function MasterStudents({
         }
     };
 
-    const handleDelete = () => {
-        if (!deletingStudent) return;
-        router.delete(`/master/students/${deletingStudent.id}`, {
-            onSuccess: () => setDeletingStudent(null),
-        });
+    const handleDelete = (student: StudentItem) => {
+        alert.deleteConfirm(
+            'Hapus Data Siswa?',
+            `Apakah Anda yakin ingin menghapus data siswa "${student.user.name}" (NIS: ${student.nis})? Akun portal siswa juga akan dihapus permanen.`,
+            () => {
+                router.delete(`/master/students/${student.id}`);
+            },
+        );
     };
 
     const handleFilterSubmit = (e?: React.FormEvent) => {
@@ -228,25 +232,6 @@ export default function MasterStudents({
             <Head title="Master Data Siswa - SIARISA" />
 
             <div className="flex flex-col gap-6 p-4 md:p-8 max-w-7xl mx-auto w-full bg-[#F6F7FA] min-h-screen">
-                {/* Flash Messages */}
-                {flash?.success && (
-                    <div className="flex items-center gap-3 rounded-2xl border border-[#181A20]/10 bg-white p-4 text-sm text-[#181A20] shadow-xs">
-                        <div className="flex size-7 items-center justify-center rounded-full bg-[#D2F442] text-[#181A20] shrink-0 font-bold">
-                            <FontAwesomeIcon icon={faCheckCircle} className="size-3.5" />
-                        </div>
-                        <span className="font-bold">{flash.success}</span>
-                    </div>
-                )}
-
-                {flash?.error && (
-                    <div className="flex items-center gap-3 rounded-2xl border border-[#FF6B4A]/20 bg-white p-4 text-sm text-[#FF6B4A] shadow-xs">
-                        <div className="flex size-7 items-center justify-center rounded-full bg-[#FF6B4A]/15 text-[#FF6B4A] shrink-0 font-bold">
-                            <FontAwesomeIcon icon={faCircleExclamation} className="size-3.5" />
-                        </div>
-                        <span className="font-bold">{flash.error}</span>
-                    </div>
-                )}
-
                 {/* Header Row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
@@ -466,7 +451,7 @@ export default function MasterStudents({
                                                         </button>
                                                         <button
                                                             type="button"
-                                                            onClick={() => setDeletingStudent(student)}
+                                                            onClick={() => handleDelete(student)}
                                                             className="flex size-8 items-center justify-center rounded-lg border border-[#E9EBEF] text-[#5A6272] hover:bg-[#FF6B4A] hover:text-white transition-colors cursor-pointer"
                                                             title="Hapus Data Siswa"
                                                         >
@@ -728,39 +713,6 @@ export default function MasterStudents({
                             </button>
                         </DialogFooter>
                     </form>
-                </DialogContent>
-            </Dialog>
-
-            {/* MODAL KONFIRMASI HAPUS */}
-            <Dialog open={!!deletingStudent} onOpenChange={() => setDeletingStudent(null)}>
-                <DialogContent className="sm:max-w-md rounded-3xl bg-white p-6 border border-[#FF6B4A]/20 shadow-2xl">
-                    <DialogHeader>
-                        <div className="flex size-10 items-center justify-center rounded-2xl bg-[#FF6B4A]/15 text-[#FF6B4A] mb-2 font-black">
-                            <FontAwesomeIcon icon={faTrash} className="size-4" />
-                        </div>
-                        <DialogTitle className="text-xl font-black text-[#181A20]">
-                            Hapus Data Siswa?
-                        </DialogTitle>
-                        <DialogDescription className="text-xs font-medium text-[#5A6272]">
-                            Apakah Anda yakin ingin menghapus data siswa <strong>{deletingStudent?.user.name}</strong> (NIS: {deletingStudent?.nis})? Akun portal siswa juga akan dihapus permanen.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter className="pt-4 gap-2 sm:gap-0">
-                        <button
-                            type="button"
-                            onClick={() => setDeletingStudent(null)}
-                            className="rounded-xl border border-[#E9EBEF] px-4 py-2 text-xs font-bold text-[#5A6272] hover:bg-[#F6F7FA] cursor-pointer"
-                        >
-                            Batal
-                        </button>
-                        <button
-                            type="button"
-                            onClick={handleDelete}
-                            className="rounded-xl bg-[#FF6B4A] px-4 py-2 text-xs font-extrabold text-white hover:bg-[#E55A3B] transition-colors cursor-pointer"
-                        >
-                            Hapus Sekarang
-                        </button>
-                    </DialogFooter>
                 </DialogContent>
             </Dialog>
         </>

@@ -34,4 +34,3 @@ class TeacherPolicy
         return $user->hasRole('admin');
     }
 }
-

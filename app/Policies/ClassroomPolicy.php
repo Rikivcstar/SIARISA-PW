@@ -29,4 +29,3 @@ class ClassroomPolicy
         return $user->hasRole('admin');
     }
 }
-

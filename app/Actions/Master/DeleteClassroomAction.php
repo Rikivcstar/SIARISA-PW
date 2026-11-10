@@ -13,4 +13,3 @@ class DeleteClassroomAction
         return (bool) $classroom->delete();
     }
 }
-

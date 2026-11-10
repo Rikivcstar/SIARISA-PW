@@ -29,4 +29,3 @@ class AcademicYearPolicy
         return $user->hasRole('admin');
     }
 }
-

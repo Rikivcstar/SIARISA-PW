@@ -12,6 +12,9 @@ Route::inertia('/', 'welcome')->name('home');
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
 
+    // Custom Alert Demo Showcase
+    Route::inertia('demo/alerts', 'demo/alerts')->name('demo.alerts');
+
     // Master Data Routes
     Route::prefix('master')->name('master.')->group(function () {
         Route::resource('industries', IndustryController::class)->except(['create', 'edit', 'show']);
