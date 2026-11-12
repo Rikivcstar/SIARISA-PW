@@ -13,7 +13,7 @@ export default function AppLogo() {
                     SIARISA
                 </span>
                 <span className="truncate text-[11px] text-muted-foreground font-medium">
-                    SMK IT Ar-Risalah
+                    SMK AR-RISALAH CARIU
                 </span>
             </div>
         </div>
