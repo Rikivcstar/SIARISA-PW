@@ -39,4 +39,13 @@ class StoreAcademicYearRequest extends FormRequest
             'is_active' => 'Status Aktif',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Tahun Ajaran Wajib Di Isi',
+            'start_date.required' => 'Tanggal Mulai Wajib di Isi',
+            'end_date.required' => 'Tanggal Selesai Wajib di Isi',
+        ];
+    }
 }

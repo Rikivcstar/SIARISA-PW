@@ -258,11 +258,10 @@ export default function MasterAcademicYears({
                         <button
                             type="button"
                             onClick={() => setActiveTab("years")}
-                            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs md:text-sm font-bold transition-all cursor-pointer ${
-                                activeTab === "years"
+                            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs md:text-sm font-bold transition-all cursor-pointer ${activeTab === "years"
                                     ? "bg-[#181A20] text-[#D2F442] shadow-xs"
                                     : "text-[#5A6272] hover:text-[#181A20]"
-                            }`}
+                                }`}
                         >
                             <FontAwesomeIcon
                                 icon={faCalendarDays}
@@ -273,11 +272,10 @@ export default function MasterAcademicYears({
                         <button
                             type="button"
                             onClick={() => setActiveTab("classrooms")}
-                            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs md:text-sm font-bold transition-all cursor-pointer ${
-                                activeTab === "classrooms"
+                            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs md:text-sm font-bold transition-all cursor-pointer ${activeTab === "classrooms"
                                     ? "bg-[#181A20] text-[#D2F442] shadow-xs"
                                     : "text-[#5A6272] hover:text-[#181A20]"
-                            }`}
+                                }`}
                         >
                             <FontAwesomeIcon
                                 icon={faLayerGroup}
@@ -370,11 +368,10 @@ export default function MasterAcademicYears({
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-3">
                                                         <div
-                                                            className={`flex size-9 items-center justify-center rounded-xl font-bold ${
-                                                                year.is_active
+                                                            className={`flex size-9 items-center justify-center rounded-xl font-bold ${year.is_active
                                                                     ? "bg-[#D2F442] text-[#181A20]"
                                                                     : "bg-[#F0F2F5] text-[#5A6272]"
-                                                            }`}
+                                                                }`}
                                                         >
                                                             <FontAwesomeIcon
                                                                 icon={
@@ -729,7 +726,7 @@ export default function MasterAcademicYears({
                                         )
                                     }
                                     className="mt-1.5 rounded-xl border-[#E9EBEF] text-xs font-semibold focus:border-[#181A20]"
-                                    required
+
                                 />
                                 {yearForm.errors.end_date && (
                                     <p className="mt-1 text-xs text-[#FF6B4A] font-bold">

@@ -72,7 +72,7 @@ export default function Login({ status, canResetPassword }: Props) {
                     <div className="hidden flex-1 items-center justify-center lg:flex select-none">
                         <div className="relative max-w-[460px] xl:max-w-[500px] w-full">
                             <img
-                                src="/images/collage.gif"
+                                src="/images/Online_transparent.gif"
                                 alt="Ilustrasi Pembelajaran Praktik Kerja Lapangan"
                                 className="w-full object-contain"
                             />
@@ -110,7 +110,7 @@ export default function Login({ status, canResetPassword }: Props) {
 
                         {/* Status Message */}
                         {status && (
-                            <div className="mt-4 rounded-lg bg-purple-50 p-3 text-center text-xs font-semibold text-purple-700 border border-purple-200">
+                            <div className="mt-4 rounded-lg bg-emerald-50 p-3 text-center text-xs font-semibold text-emerald-700 border border-emerald-200">
                                 {status}
                             </div>
                         )}
@@ -140,7 +140,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                             tabIndex={1}
                                             autoComplete="username"
                                             placeholder="NISN / Username / Email"
-                                            className="w-full rounded-lg border border-slate-300 bg-white/90 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-purple-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600/20 transition-all shadow-xs"
+                                            className="w-full rounded-lg border border-slate-300 bg-white/90 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600/20 transition-all shadow-xs"
                                         />
                                         <InputError
                                             message={errors.email}
@@ -165,7 +165,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                                 tabIndex={2}
                                                 autoComplete="current-password"
                                                 placeholder="Kata sandi"
-                                                className="w-full rounded-lg border border-slate-300 bg-white/90 px-3.5 py-2.5 pr-10 text-sm text-slate-900 placeholder:text-slate-400 focus:border-purple-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600/20 transition-all shadow-xs"
+                                                className="w-full rounded-lg border border-slate-300 bg-white/90 px-3.5 py-2.5 pr-10 text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600/20 transition-all shadow-xs"
                                             />
                                             <button
                                                 type="button"
@@ -204,7 +204,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                             <Link
                                                 href={request()}
                                                 tabIndex={5}
-                                                className="text-purple-600 hover:text-purple-800 font-medium hover:underline"
+                                                className="text-emerald-600 hover:text-emerald-800 font-medium hover:underline"
                                             >
                                                 Lupa Password?
                                             </Link>
@@ -217,7 +217,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                         tabIndex={4}
                                         disabled={processing}
                                         data-test="login-button"
-                                        className="mt-2 w-full rounded-lg bg-purple-500 py-3 text-center text-sm font-bold tracking-wider text-white hover:bg-emerald-800 active:scale-[0.99] transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
+                                        className="mt-2 w-full rounded-lg bg-emerald-500 py-3 text-center text-sm font-bold tracking-wider text-white hover:bg-emerald-800 active:scale-[0.99] transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
                                     >
                                         {processing && <Spinner className="size-4 text-white" />}
                                         <span>MASUK</span>

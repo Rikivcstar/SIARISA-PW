@@ -186,7 +186,7 @@ export default function MasterIndustries({ industries, filters }: Props) {
                             </h1>
                         </div>
                         <p className="text-xs md:text-sm text-[#5A6272] mt-1.5">
-                            Kelola data perusahaan mitra tempat Praktik Kerja Lapangan (PKL) siswa.
+                            Kelola data perusahaan mitra tempat Praktik Kerja Lapangan (PKL) siswa/i.
                         </p>
                     </div>
 
@@ -207,31 +207,28 @@ export default function MasterIndustries({ industries, filters }: Props) {
                     <div className="flex items-center gap-1 bg-[#F6F7FA] p-1 rounded-xl">
                         <button
                             onClick={() => handleStatusFilter('all')}
-                            className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                                filters.status === 'all' || !filters.status
-                                    ? 'bg-[#181A20] text-white shadow-xs'
-                                    : 'text-[#5A6272] hover:text-[#181A20]'
-                            }`}
+                            className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${filters.status === 'all' || !filters.status
+                                ? 'bg-[#181A20] text-white shadow-xs'
+                                : 'text-[#5A6272] hover:text-[#181A20]'
+                                }`}
                         >
                             Semua ({industries.total})
                         </button>
                         <button
                             onClick={() => handleStatusFilter('active')}
-                            className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                                filters.status === 'active'
-                                    ? 'bg-[#181A20] text-white shadow-xs'
-                                    : 'text-[#5A6272] hover:text-[#181A20]'
-                            }`}
+                            className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${filters.status === 'active'
+                                ? 'bg-[#181A20] text-white shadow-xs'
+                                : 'text-[#5A6272] hover:text-[#181A20]'
+                                }`}
                         >
                             Aktif
                         </button>
                         <button
                             onClick={() => handleStatusFilter('inactive')}
-                            className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                                filters.status === 'inactive'
-                                    ? 'bg-[#FF6B4A] text-white shadow-xs'
-                                    : 'text-[#5A6272] hover:text-[#181A20]'
-                            }`}
+                            className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all ${filters.status === 'inactive'
+                                ? 'bg-[#FF6B4A] text-white shadow-xs'
+                                : 'text-[#5A6272] hover:text-[#181A20]'
+                                }`}
                         >
                             Non-Aktif
                         </button>
@@ -390,11 +387,10 @@ export default function MasterIndustries({ industries, filters }: Props) {
                                         disabled={!link.url}
                                         onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
                                         dangerouslySetInnerHTML={{ __html: link.label }}
-                                        className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-colors cursor-pointer ${
-                                            link.active
-                                                ? 'bg-[#181A20] text-white shadow-xs'
-                                                : 'text-[#5A6272] hover:bg-[#F6F7FA] disabled:opacity-30 disabled:cursor-not-allowed'
-                                        }`}
+                                        className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-colors cursor-pointer ${link.active
+                                            ? 'bg-[#181A20] text-white shadow-xs'
+                                            : 'text-[#5A6272] hover:bg-[#F6F7FA] disabled:opacity-30 disabled:cursor-not-allowed'
+                                            }`}
                                     />
                                 ))}
                             </div>
@@ -430,7 +426,7 @@ export default function MasterIndustries({ industries, filters }: Props) {
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder="Contoh: PT Telkom Indonesia, Studio Desain XYZ"
                                 className="mt-1 text-sm rounded-xl"
-                                required
+
                             />
                             {errors.name && <p className="text-xs text-[#FF6B4A] mt-1">{errors.name}</p>}
                         </div>
@@ -447,7 +443,6 @@ export default function MasterIndustries({ industries, filters }: Props) {
                                 rows={2}
                                 placeholder="Jalan, RT/RW, Kelurahan, Kecamatan"
                                 className="mt-1 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                                required
                             />
                             {errors.address && <p className="text-xs text-[#FF6B4A] mt-1">{errors.address}</p>}
                         </div>
@@ -465,6 +460,7 @@ export default function MasterIndustries({ industries, filters }: Props) {
                                     placeholder="Contoh: Bogor, Jakarta Timur"
                                     className="mt-1 text-sm rounded-xl"
                                 />
+                                {errors.city && <p className="text-xs text-[#FF6B4A] mt-1">{errors.city}</p>}
                             </div>
 
                             <div>
@@ -478,6 +474,7 @@ export default function MasterIndustries({ industries, filters }: Props) {
                                     placeholder="021-xxxxxxx"
                                     className="mt-1 text-sm rounded-xl"
                                 />
+                                {errors.phone && <p className="text-xs text-[#FF6B4A] mt-1">{errors.phone}</p>}
                             </div>
                         </div>
 
@@ -494,6 +491,7 @@ export default function MasterIndustries({ industries, filters }: Props) {
                                     placeholder="Nama PIC perusahaan"
                                     className="mt-1 text-sm rounded-xl"
                                 />
+                                {errors.contact_person && <p className="text-xs text-[#FF6B4A] mt-1">{errors.contact_person}</p>}
                             </div>
 
                             <div>
@@ -507,6 +505,7 @@ export default function MasterIndustries({ industries, filters }: Props) {
                                     placeholder="08xxxxxxxxxx"
                                     className="mt-1 text-sm rounded-xl"
                                 />
+                                {errors.contact_phone && <p className="text-xs text-[#FF6B4A] mt-1">{errors.contact_phone}</p>}
                             </div>
                         </div>
 
@@ -523,6 +522,7 @@ export default function MasterIndustries({ industries, filters }: Props) {
                                 placeholder="hrd@perusahaan.co.id"
                                 className="mt-1 text-sm rounded-xl"
                             />
+                            {errors.email && <p className="text-xs text-[#FF6B4A] mt-1">{errors.email}</p>}
                         </div>
 
                         {/* Status Kerjasama */}

@@ -47,4 +47,13 @@ class StoreIndustryRequest extends FormRequest
             'is_active' => 'Status Kerjasama',
         ];
     }
+
+    public function message(): array
+    {
+        return [
+            'name.required' => 'Kolom Nama indusrti wajib di isi',
+            'address.required' => 'Kolom Alamat Wajib di isi',
+            'city.required' => 'Kolom Kota/Kabupaten wajib di isi',
+        ];
+    }
 }
