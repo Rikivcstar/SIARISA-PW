@@ -1,4 +1,6 @@
 import { Head, Link, usePage } from '@inertiajs/react';
+import { useEffect, useRef } from 'react';
+import Chart from 'chart.js/auto';
 import {
     faArrowRight,
     faAward,
@@ -39,14 +41,20 @@ interface RecentApp {
 interface DashboardProps {
     stats: DashboardStats;
     recentApplications: RecentApp[];
+    applicationTrend?: { labels: string[]; values: number[] };
+    applicationStatuses?: { labels: string[]; values: number[] };
     activeYear?: { id: number; name: string } | null;
 }
 
 export default function Dashboard({
     stats,
     recentApplications = [],
+    applicationTrend = { labels: [], values: [] },
+    applicationStatuses = { labels: ['Diajukan', 'Disetujui', 'Ditolak'], values: [0, 0, 0] },
     activeYear,
 }: DashboardProps) {
+    const trendCanvas = useRef<HTMLCanvasElement>(null);
+    const statusCanvas = useRef<HTMLCanvasElement>(null);
     const { auth, school } = usePage().props as {
         auth: { user: { name: string; roles?: string[] } };
         school?: { name: string; system_name: string };
@@ -54,6 +62,56 @@ export default function Dashboard({
 
     const roles = auth?.user?.roles ?? [];
     const isAdmin = roles.includes('admin') || roles.includes('headmaster');
+
+    useEffect(() => {
+        if (!isAdmin || !trendCanvas.current || !statusCanvas.current) return;
+
+        const trendChart = new Chart(trendCanvas.current, {
+            type: 'bar',
+            data: {
+                labels: applicationTrend.labels,
+                datasets: [{
+                    label: 'Pengajuan',
+                    data: applicationTrend.values,
+                    backgroundColor: '#D2F442',
+                    borderRadius: 8,
+                    maxBarThickness: 42,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } },
+                },
+            },
+        });
+        const statusChart = new Chart(statusCanvas.current, {
+            type: 'doughnut',
+            data: {
+                labels: applicationStatuses.labels,
+                datasets: [{
+                    data: applicationStatuses.values,
+                    backgroundColor: ['#F59E0B', '#84CC16', '#FF6B4A'],
+                    borderWidth: 0,
+                    hoverOffset: 5,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 18 } } },
+            },
+        });
+
+        return () => {
+            trendChart.destroy();
+            statusChart.destroy();
+        };
+    }, [isAdmin, applicationTrend, applicationStatuses]);
 
     const getStatusPill = (status: string, label: string) => {
         if (status === 'approved') {
@@ -240,6 +298,25 @@ export default function Dashboard({
                             </div>
                         </div>
                     </div>
+                )}
+
+                {isAdmin && (
+                    <section className="grid grid-cols-1 gap-4 lg:grid-cols-3" aria-label="Grafik pengajuan PKL">
+                        <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs lg:col-span-2">
+                            <div className="mb-4">
+                                <h2 className="text-base font-bold text-foreground">Tren Pengajuan PKL</h2>
+                                <p className="mt-0.5 text-xs text-muted-foreground">Jumlah pengajuan dalam enam bulan terakhir</p>
+                            </div>
+                            <div className="h-64"><canvas ref={trendCanvas} aria-label="Grafik batang tren pengajuan" role="img" /></div>
+                        </div>
+                        <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs">
+                            <div className="mb-4">
+                                <h2 className="text-base font-bold text-foreground">Status Pengajuan</h2>
+                                <p className="mt-0.5 text-xs text-muted-foreground">Komposisi pada tahun ajaran aktif</p>
+                            </div>
+                            <div className="h-64"><canvas ref={statusCanvas} aria-label="Grafik doughnut status pengajuan" role="img" /></div>
+                        </div>
+                    </section>
                 )}
 
                 {/* Middle Row: Progress Activity & Action Card */}

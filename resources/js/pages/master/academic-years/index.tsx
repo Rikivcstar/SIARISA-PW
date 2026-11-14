@@ -201,7 +201,7 @@ export default function MasterAcademicYears({
         <>
             <Head title="Master Tahun Ajaran & Kelas - SIARISA" />
 
-            <div className="flex flex-col gap-6 p-4 md:p-8 max-w-7xl mx-auto w-full bg-[#F6F7FA] min-h-screen">
+            <div className="flex flex-col gap-6 p-4 md:p-8 max-w-7xl mx-auto w-full bg-background min-h-screen">
                 {/* Header Row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
@@ -212,11 +212,11 @@ export default function MasterAcademicYears({
                                     className="size-4"
                                 />
                             </div>
-                            <h1 className="text-2xl font-black tracking-tight text-[#181A20]">
+                            <h1 className="text-2xl font-black tracking-tight text-foreground">
                                 Tahun Ajaran & Rombel
                             </h1>
                         </div>
-                        <p className="mt-1 text-sm font-medium text-[#5A6272]">
+                        <p className="mt-1 text-sm font-medium text-muted-foreground">
                             Kelola periode akademik aktif dan struktur rombongan
                             belajar / kelas siswa.
                         </p>
@@ -254,13 +254,13 @@ export default function MasterAcademicYears({
 
                 {/* Tab Switcher & Active Year Highlight Card */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="md:col-span-2 flex items-center p-1.5 bg-white rounded-2xl border border-[#181A20]/8 shadow-xs">
+                    <div className="md:col-span-2 flex items-center p-1.5 bg-card rounded-2xl border border-border shadow-xs">
                         <button
                             type="button"
                             onClick={() => setActiveTab("years")}
                             className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs md:text-sm font-bold transition-all cursor-pointer ${activeTab === "years"
                                     ? "bg-[#181A20] text-[#D2F442] shadow-xs"
-                                    : "text-[#5A6272] hover:text-[#181A20]"
+                                    : "text-muted-foreground hover:text-foreground"
                                 }`}
                         >
                             <FontAwesomeIcon
@@ -274,7 +274,7 @@ export default function MasterAcademicYears({
                             onClick={() => setActiveTab("classrooms")}
                             className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs md:text-sm font-bold transition-all cursor-pointer ${activeTab === "classrooms"
                                     ? "bg-[#181A20] text-[#D2F442] shadow-xs"
-                                    : "text-[#5A6272] hover:text-[#181A20]"
+                                    : "text-muted-foreground hover:text-foreground"
                                 }`}
                         >
                             <FontAwesomeIcon
@@ -287,7 +287,7 @@ export default function MasterAcademicYears({
 
                     <div className="flex items-center justify-between p-4 bg-[#181A20] text-white rounded-2xl shadow-xs">
                         <div className="flex items-center gap-3">
-                            <div className="flex size-9 items-center justify-center rounded-xl bg-[#D2F442] text-[#181A20] font-black">
+                            <div className="flex size-9 items-center justify-center rounded-xl bg-[#D2F442] text-foreground dark:text-[#181A20] font-black">
                                 <FontAwesomeIcon
                                     icon={faSchool}
                                     className="size-4"
@@ -311,13 +311,13 @@ export default function MasterAcademicYears({
 
                 {/* TAB 1: TAHUN AJARAN */}
                 {activeTab === "years" && (
-                    <div className="bg-white rounded-3xl border border-[#181A20]/8 shadow-xs overflow-hidden">
-                        <div className="p-5 border-b border-[#181A20]/8 flex items-center justify-between">
+                    <div className="bg-card rounded-3xl border border-border shadow-xs overflow-hidden">
+                        <div className="p-5 border-b border-border flex items-center justify-between">
                             <div>
-                                <h2 className="text-base font-extrabold text-[#181A20]">
+                                <h2 className="text-base font-extrabold text-foreground">
                                     Daftar Periode Tahun Ajaran
                                 </h2>
-                                <p className="text-xs text-[#5A6272] font-medium">
+                                <p className="text-xs text-muted-foreground font-medium">
                                     Mengatur tahun akademik aktif yang digunakan
                                     pada penempatan PKL dan PPDB.
                                 </p>
@@ -327,7 +327,7 @@ export default function MasterAcademicYears({
                         <div className="overflow-x-auto">
                             <table className="w-full text-left text-sm">
                                 <thead>
-                                    <tr className="border-b border-[#181A20]/8 bg-[#F6F7FA]/70 text-[11px] font-black uppercase tracking-wider text-[#5A6272]">
+                                    <tr className="border-b border-border bg-background/70 text-[11px] font-black uppercase tracking-wider text-muted-foreground">
                                         <th className="px-6 py-4">
                                             Tahun Ajaran
                                         </th>
@@ -347,12 +347,12 @@ export default function MasterAcademicYears({
                                         )}
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-[#181A20]/5 font-medium text-[#181A20]">
+                                <tbody className="divide-y divide-border font-medium text-foreground">
                                     {academicYears.length === 0 ? (
                                         <tr>
                                             <td
                                                 colSpan={5}
-                                                className="px-6 py-12 text-center text-[#5A6272]"
+                                                className="px-6 py-12 text-center text-muted-foreground"
                                             >
                                                 Belum ada data tahun ajaran.
                                                 Klik tombol Tambah Tahun Ajaran
@@ -363,14 +363,14 @@ export default function MasterAcademicYears({
                                         academicYears.map((year) => (
                                             <tr
                                                 key={year.id}
-                                                className="hover:bg-[#F6F7FA]/50 transition-colors"
+                                                className="hover:bg-background/50 transition-colors"
                                             >
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-3">
                                                         <div
                                                             className={`flex size-9 items-center justify-center rounded-xl font-bold ${year.is_active
-                                                                    ? "bg-[#D2F442] text-[#181A20]"
-                                                                    : "bg-[#F0F2F5] text-[#5A6272]"
+                                                                    ? "bg-[#D2F442] text-foreground dark:text-[#181A20]"
+                                                                    : "bg-background text-muted-foreground"
                                                                 }`}
                                                         >
                                                             <FontAwesomeIcon
@@ -384,18 +384,18 @@ export default function MasterAcademicYears({
                                                             <div className="font-extrabold text-sm">
                                                                 {year.name}
                                                             </div>
-                                                            <div className="text-[11px] text-[#5A6272]">
+                                                            <div className="text-[11px] text-muted-foreground">
                                                                 ID: #{year.id}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 text-xs font-semibold text-[#5A6272]">
+                                                <td className="px-6 py-4 text-xs font-semibold text-muted-foreground">
                                                     {year.start_date} s/d{" "}
                                                     {year.end_date}
                                                 </td>
                                                 <td className="px-6 py-4 text-center">
-                                                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-black bg-[#F0F2F5] text-[#181A20]">
+                                                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-black bg-background text-foreground">
                                                         {year.classrooms_count ??
                                                             0}{" "}
                                                         Kelas
@@ -403,7 +403,7 @@ export default function MasterAcademicYears({
                                                 </td>
                                                 <td className="px-6 py-4 text-center">
                                                     {year.is_active ? (
-                                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-[#D2F442] text-[#181A20] shadow-2xs">
+                                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-[#D2F442] text-foreground dark:text-[#181A20] shadow-2xs">
                                                             <FontAwesomeIcon
                                                                 icon={faCheck}
                                                                 className="size-3"
@@ -411,7 +411,7 @@ export default function MasterAcademicYears({
                                                             Aktif
                                                         </span>
                                                     ) : (
-                                                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#E9EBEF] text-[#5A6272]">
+                                                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-background text-muted-foreground">
                                                             Nonaktif
                                                         </span>
                                                     )}
@@ -426,7 +426,7 @@ export default function MasterAcademicYears({
                                                                         year,
                                                                     )
                                                                 }
-                                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#181A20] text-white hover:bg-[#D2F442] hover:text-[#181A20] transition-colors cursor-pointer"
+                                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#181A20] text-white hover:bg-[#D2F442] hover:text-foreground transition-colors cursor-pointer"
                                                             >
                                                                 <FontAwesomeIcon
                                                                     icon={
@@ -440,7 +440,7 @@ export default function MasterAcademicYears({
                                                                 </span>
                                                             </button>
                                                         ) : (
-                                                            <span className="text-xs font-bold text-[#5A6272]">
+                                                            <span className="text-xs font-bold text-muted-foreground">
                                                                 (Sedang Aktif)
                                                             </span>
                                                         )}
@@ -459,11 +459,11 @@ export default function MasterAcademicYears({
                 {activeTab === "classrooms" && (
                     <div className="flex flex-col gap-4">
                         {/* Filter Tahun Ajaran */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-white rounded-2xl border border-[#181A20]/8 shadow-xs">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-card rounded-2xl border border-border shadow-xs">
                             <div className="flex items-center gap-3">
                                 <Label
                                     htmlFor="year-select"
-                                    className="text-xs font-black uppercase tracking-wider text-[#5A6272]"
+                                    className="text-xs font-black uppercase tracking-wider text-muted-foreground"
                                 >
                                     Filter Tahun Ajaran:
                                 </Label>
@@ -473,7 +473,7 @@ export default function MasterAcademicYears({
                                     onChange={(e) =>
                                         handleFilterYear(Number(e.target.value))
                                     }
-                                    className="rounded-xl border border-[#E9EBEF] bg-[#F6F7FA] px-3.5 py-2 text-xs font-extrabold text-[#181A20] focus:border-[#181A20] focus:ring-0 cursor-pointer"
+                                    className="rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-extrabold text-foreground focus:border-ring focus:ring-0 cursor-pointer"
                                 >
                                     {academicYears.map((y) => (
                                         <option key={y.id} value={y.id}>
@@ -484,17 +484,17 @@ export default function MasterAcademicYears({
                                 </select>
                             </div>
 
-                            <div className="text-xs font-bold text-[#5A6272]">
+                            <div className="text-xs font-bold text-muted-foreground">
                                 Menampilkan {classrooms.length} Rombel / Kelas
                             </div>
                         </div>
 
                         {/* Classrooms Table */}
-                        <div className="bg-white rounded-3xl border border-[#181A20]/8 shadow-xs overflow-hidden">
+                        <div className="bg-card rounded-3xl border border-border shadow-xs overflow-hidden">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left text-sm">
                                     <thead>
-                                        <tr className="border-b border-[#181A20]/8 bg-[#F6F7FA]/70 text-[11px] font-black uppercase tracking-wider text-[#5A6272]">
+                                        <tr className="border-b border-border bg-background/70 text-[11px] font-black uppercase tracking-wider text-muted-foreground">
                                             <th className="px-6 py-4">
                                                 Nama Kelas & Tahun Ajaran
                                             </th>
@@ -511,12 +511,12 @@ export default function MasterAcademicYears({
                                             )}
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-[#181A20]/5 font-medium text-[#181A20]">
+                                    <tbody className="divide-y divide-border font-medium text-foreground">
                                         {classrooms.length === 0 ? (
                                             <tr>
                                                 <td
                                                     colSpan={4}
-                                                    className="px-6 py-12 text-center text-[#5A6272]"
+                                                    className="px-6 py-12 text-center text-muted-foreground"
                                                 >
                                                     Belum ada kelas terdaftar
                                                     pada tahun ajaran ini. Klik
@@ -527,11 +527,11 @@ export default function MasterAcademicYears({
                                             classrooms.map((cls) => (
                                                 <tr
                                                     key={cls.id}
-                                                    className="hover:bg-[#F6F7FA]/50 transition-colors"
+                                                    className="hover:bg-background/50 transition-colors"
                                                 >
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center gap-3">
-                                                            <div className="flex size-9 items-center justify-center rounded-xl bg-[#F0F2F5] text-[#181A20] font-black">
+                                                            <div className="flex size-9 items-center justify-center rounded-xl bg-background text-foreground font-black">
                                                                 <FontAwesomeIcon
                                                                     icon={
                                                                         faGraduationCap
@@ -543,7 +543,7 @@ export default function MasterAcademicYears({
                                                                 <div className="font-extrabold text-sm">
                                                                     {cls.name}
                                                                 </div>
-                                                                <div className="text-[11px] text-[#5A6272]">
+                                                                <div className="text-[11px] text-muted-foreground">
                                                                     {
                                                                         cls
                                                                             .academic_year
@@ -555,13 +555,13 @@ export default function MasterAcademicYears({
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center gap-2">
-                                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-black bg-[#D2F442] text-[#181A20]">
+                                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-black bg-[#D2F442] text-foreground dark:text-[#181A20]">
                                                                 {
                                                                     cls.major
                                                                         ?.code
                                                                 }
                                                             </span>
-                                                            <span className="text-xs text-[#5A6272] font-semibold">
+                                                            <span className="text-xs text-muted-foreground font-semibold">
                                                                 {
                                                                     cls.major
                                                                         ?.name
@@ -570,10 +570,10 @@ export default function MasterAcademicYears({
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4 text-center">
-                                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-[#F0F2F5] text-[#181A20]">
+                                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-background text-foreground">
                                                             <FontAwesomeIcon
                                                                 icon={faUsers}
-                                                                className="size-3 text-[#5A6272]"
+                                                                className="size-3 text-muted-foreground"
                                                             />
                                                             {cls.students_count ??
                                                                 0}{" "}
@@ -590,7 +590,7 @@ export default function MasterAcademicYears({
                                                                             cls,
                                                                         )
                                                                     }
-                                                                    className="flex size-8 items-center justify-center rounded-lg border border-[#E9EBEF] text-[#5A6272] hover:bg-[#181A20] hover:text-[#D2F442] transition-colors cursor-pointer"
+                                                                    className="flex size-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-primary hover:text-[#D2F442] transition-colors cursor-pointer"
                                                                     title="Edit Kelas"
                                                                 >
                                                                     <FontAwesomeIcon
@@ -607,7 +607,7 @@ export default function MasterAcademicYears({
                                                                             cls,
                                                                         )
                                                                     }
-                                                                    className="flex size-8 items-center justify-center rounded-lg border border-[#E9EBEF] text-[#5A6272] hover:bg-[#FF6B4A] hover:text-white transition-colors cursor-pointer"
+                                                                    className="flex size-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-[#FF6B4A] hover:text-white transition-colors cursor-pointer"
                                                                     title="Hapus Kelas"
                                                                 >
                                                                     <FontAwesomeIcon
@@ -633,7 +633,7 @@ export default function MasterAcademicYears({
 
             {/* MODAL TAMBAH TAHUN AJARAN */}
             <Dialog open={isYearModalOpen} onOpenChange={setIsYearModalOpen}>
-                <DialogContent className="sm:max-w-md rounded-3xl bg-white p-6 shadow-2xl border border-[#181A20]/10">
+                <DialogContent className="sm:max-w-md rounded-3xl bg-card p-6 shadow-2xl border border-border">
                     <DialogHeader>
                         <div className="flex size-10 items-center justify-center rounded-2xl bg-[#181A20] text-[#D2F442] mb-2 font-black">
                             <FontAwesomeIcon
@@ -641,10 +641,10 @@ export default function MasterAcademicYears({
                                 className="size-4"
                             />
                         </div>
-                        <DialogTitle className="text-xl font-black text-[#181A20]">
+                        <DialogTitle className="text-xl font-black text-foreground">
                             Tambah Tahun Ajaran
                         </DialogTitle>
-                        <DialogDescription className="text-xs font-medium text-[#5A6272]">
+                        <DialogDescription className="text-xs font-medium text-muted-foreground">
                             Format nama periode, contoh: 2026/2027 atau
                             2027/2028.
                         </DialogDescription>
@@ -657,7 +657,7 @@ export default function MasterAcademicYears({
                         <div>
                             <Label
                                 htmlFor="year_name"
-                                className="text-xs font-bold text-[#181A20]"
+                                className="text-xs font-bold text-foreground"
                             >
                                 Nama Tahun Ajaran{" "}
                                 <span className="text-[#FF6B4A]">*</span>
@@ -670,7 +670,7 @@ export default function MasterAcademicYears({
                                 onChange={(e) =>
                                     yearForm.setData("name", e.target.value)
                                 }
-                                className="mt-1.5 rounded-xl border-[#E9EBEF] text-xs font-semibold focus:border-[#181A20]"
+                                className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                             />
                             {yearForm.errors.name && (
                                 <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
@@ -683,7 +683,7 @@ export default function MasterAcademicYears({
                             <div>
                                 <Label
                                     htmlFor="start_date"
-                                    className="text-xs font-bold text-[#181A20]"
+                                    className="text-xs font-bold text-foreground"
                                 >
                                     Tanggal Mulai{" "}
                                     <span className="text-[#FF6B4A]">*</span>
@@ -698,7 +698,7 @@ export default function MasterAcademicYears({
                                             e.target.value,
                                         )
                                     }
-                                    className="mt-1.5 rounded-xl border-[#E9EBEF] text-xs font-semibold focus:border-[#181A20]"
+                                    className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                                 />
                                 {yearForm.errors.start_date && (
                                     <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
@@ -710,7 +710,7 @@ export default function MasterAcademicYears({
                             <div>
                                 <Label
                                     htmlFor="end_date"
-                                    className="text-xs font-bold text-[#181A20]"
+                                    className="text-xs font-bold text-foreground"
                                 >
                                     Tanggal Selesai{" "}
                                     <span className="text-[#FF6B4A]">*</span>
@@ -725,7 +725,7 @@ export default function MasterAcademicYears({
                                             e.target.value,
                                         )
                                     }
-                                    className="mt-1.5 rounded-xl border-[#E9EBEF] text-xs font-semibold focus:border-[#181A20]"
+                                    className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
 
                                 />
                                 {yearForm.errors.end_date && (
@@ -747,11 +747,11 @@ export default function MasterAcademicYears({
                                         e.target.checked,
                                     )
                                 }
-                                className="size-4 rounded text-[#181A20] focus:ring-0 cursor-pointer"
+                                className="size-4 rounded text-foreground focus:ring-0 cursor-pointer"
                             />
                             <Label
                                 htmlFor="is_active"
-                                className="text-xs font-bold text-[#181A20] cursor-pointer"
+                                className="text-xs font-bold text-foreground cursor-pointer"
                             >
                                 Jadikan tahun ajaran aktif sekarang
                             </Label>
@@ -761,7 +761,7 @@ export default function MasterAcademicYears({
                             <button
                                 type="button"
                                 onClick={() => setIsYearModalOpen(false)}
-                                className="rounded-xl border border-[#E9EBEF] px-4 py-2 text-xs font-bold text-[#5A6272] hover:bg-[#F6F7FA] transition-colors cursor-pointer"
+                                className="rounded-xl border border-border px-4 py-2 text-xs font-bold text-muted-foreground hover:bg-background transition-colors cursor-pointer"
                             >
                                 Batal
                             </button>
@@ -781,7 +781,7 @@ export default function MasterAcademicYears({
 
             {/* MODAL TAMBAH / EDIT KELAS */}
             <Dialog open={isClassModalOpen} onOpenChange={setIsClassModalOpen}>
-                <DialogContent className="sm:max-w-md rounded-3xl bg-white p-6 border border-[#181A20]/10 shadow-2xl">
+                <DialogContent className="sm:max-w-md rounded-3xl bg-card p-6 border border-border shadow-2xl">
                     <DialogHeader>
                         <div className="flex size-10 items-center justify-center rounded-2xl bg-[#181A20] text-[#D2F442] mb-2 font-black">
                             <FontAwesomeIcon
@@ -789,12 +789,12 @@ export default function MasterAcademicYears({
                                 className="size-4"
                             />
                         </div>
-                        <DialogTitle className="text-xl font-black text-[#181A20]">
+                        <DialogTitle className="text-xl font-black text-foreground">
                             {editingClassroom
                                 ? "Edit Data Kelas"
                                 : "Tambah Kelas Baru"}
                         </DialogTitle>
-                        <DialogDescription className="text-xs font-medium text-[#5A6272]">
+                        <DialogDescription className="text-xs font-medium text-muted-foreground">
                             Tentukan nama rombel, tingkat kelas, dan jurusan
                             keahlian.
                         </DialogDescription>
@@ -807,7 +807,7 @@ export default function MasterAcademicYears({
                         <div>
                             <Label
                                 htmlFor="academic_year_id"
-                                className="text-xs font-bold text-[#181A20]"
+                                className="text-xs font-bold text-foreground"
                             >
                                 Tahun Ajaran{" "}
                                 <span className="text-[#FF6B4A]">*</span>
@@ -821,7 +821,7 @@ export default function MasterAcademicYears({
                                         Number(e.target.value),
                                     )
                                 }
-                                className="mt-1.5 w-full rounded-xl border border-[#E9EBEF] bg-white px-3 py-2 text-xs font-semibold text-[#181A20] focus:border-[#181A20] focus:ring-0"
+                                className="mt-1.5 w-full rounded-xl border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground focus:border-ring focus:ring-0"
                                 required
                             >
                                 {academicYears.map((y) => (
@@ -840,7 +840,7 @@ export default function MasterAcademicYears({
                         <div>
                             <Label
                                 htmlFor="major_id"
-                                className="text-xs font-bold text-[#181A20]"
+                                className="text-xs font-bold text-foreground"
                             >
                                 Program Keahlian / Jurusan{" "}
                                 <span className="text-[#FF6B4A]">*</span>
@@ -854,7 +854,7 @@ export default function MasterAcademicYears({
                                         Number(e.target.value),
                                     )
                                 }
-                                className="mt-1.5 w-full rounded-xl border border-[#E9EBEF] bg-white px-3 py-2 text-xs font-semibold text-[#181A20] focus:border-[#181A20] focus:ring-0"
+                                className="mt-1.5 w-full rounded-xl border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground focus:border-ring focus:ring-0"
                                 required
                             >
                                 {majors.map((m) => (
@@ -868,7 +868,7 @@ export default function MasterAcademicYears({
                         <div>
                             <Label
                                 htmlFor="classroom_name"
-                                className="text-xs font-bold text-[#181A20]"
+                                className="text-xs font-bold text-foreground"
                             >
                                 Nama Kelas / Rombel{" "}
                                 <span className="text-[#FF6B4A]">*</span>
@@ -881,7 +881,7 @@ export default function MasterAcademicYears({
                                 onChange={(e) =>
                                     classForm.setData("name", e.target.value)
                                 }
-                                className="mt-1.5 rounded-xl border-[#E9EBEF] text-xs font-semibold focus:border-[#181A20]"
+                                className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                             />
                             {classForm.errors.name && (
                                 <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
@@ -894,7 +894,7 @@ export default function MasterAcademicYears({
                             <button
                                 type="button"
                                 onClick={() => setIsClassModalOpen(false)}
-                                className="rounded-xl border border-[#E9EBEF] px-4 py-2 text-xs font-bold text-[#5A6272] hover:bg-[#F6F7FA] transition-colors cursor-pointer"
+                                className="rounded-xl border border-border px-4 py-2 text-xs font-bold text-muted-foreground hover:bg-background transition-colors cursor-pointer"
                             >
                                 Batal
                             </button>

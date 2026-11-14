@@ -159,7 +159,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
         <>
             <Head title="Master Data Guru Pembimbing - SIARISA" />
 
-            <div className="flex flex-col gap-6 p-4 md:p-8 max-w-7xl mx-auto w-full bg-[#F6F7FA] min-h-screen">
+            <div className="flex flex-col gap-6 p-4 md:p-8 max-w-7xl mx-auto w-full bg-background min-h-screen">
                 {/* Header Row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
@@ -167,11 +167,11 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                             <div className="flex size-10 items-center justify-center rounded-2xl bg-[#181A20] text-white">
                                 <FontAwesomeIcon icon={faChalkboardUser} className="size-4" />
                             </div>
-                            <h1 className="text-2xl font-black tracking-tight text-[#181A20]">
+                            <h1 className="text-2xl font-black tracking-tight text-foreground">
                                 Guru Pembimbing Sekolah
                             </h1>
                         </div>
-                        <p className="mt-1 text-sm font-medium text-[#5A6272]">
+                        <p className="mt-1 text-sm font-medium text-muted-foreground">
                             Kelola data bapak/ibu guru pembimbing penempatan PKL dan monitoring siswa.
                         </p>
                     </div>
@@ -189,33 +189,33 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                 </div>
 
                 {/* Search Bar & Summary Card */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-white rounded-2xl border border-[#181A20]/8 shadow-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-card rounded-2xl border border-border shadow-xs">
                     <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md">
                         <FontAwesomeIcon
                             icon={faMagnifyingGlass}
-                            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#5A6272] size-3.5"
+                            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground size-3.5"
                         />
                         <Input
                             type="text"
                             placeholder="Cari nama guru, NIP, email, atau no. telepon..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="pl-10 rounded-xl border-[#E9EBEF] bg-[#F6F7FA] text-xs font-semibold focus:border-[#181A20]"
+                            className="pl-10 rounded-xl border-border bg-background text-xs font-semibold focus:border-ring"
                         />
                     </form>
 
-                    <div className="flex items-center gap-2 text-xs font-bold text-[#5A6272]">
+                    <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
                         <span className="inline-flex size-2 rounded-full bg-[#D2F442]" />
                         Total: <strong>{teachers.total}</strong> Guru Pembimbing
                     </div>
                 </div>
 
                 {/* Table Data */}
-                <div className="bg-white rounded-3xl border border-[#181A20]/8 shadow-xs overflow-hidden">
+                <div className="bg-card rounded-3xl border border-border shadow-xs overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm">
                             <thead>
-                                <tr className="border-b border-[#181A20]/8 bg-[#F6F7FA]/70 text-[11px] font-black uppercase tracking-wider text-[#5A6272]">
+                                <tr className="border-b border-border bg-background/70 text-[11px] font-black uppercase tracking-wider text-muted-foreground">
                                     <th className="px-6 py-4">Nama Lengkap & NIP</th>
                                     <th className="px-6 py-4">Kontak (Email / WhatsApp)</th>
                                     <th className="px-6 py-4">Alamat Domisili</th>
@@ -223,27 +223,27 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                                     {isAdmin && <th className="px-6 py-4 text-right">Aksi</th>}
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#181A20]/5 font-medium text-[#181A20]">
+                            <tbody className="divide-y divide-border font-medium text-foreground">
                                 {teachers.data.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-12 text-center text-[#5A6272]">
+                                        <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
                                             Tidak ada data guru pembimbing ditemukan.
                                         </td>
                                     </tr>
                                 ) : (
                                     teachers.data.map((teacher) => (
-                                        <tr key={teacher.id} className="hover:bg-[#F6F7FA]/50 transition-colors">
+                                        <tr key={teacher.id} className="hover:bg-background/50 transition-colors">
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-3">
                                                     <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-[#181A20] text-[#D2F442] font-black">
                                                         <FontAwesomeIcon icon={faChalkboardUser} className="size-4" />
                                                     </div>
                                                     <div>
-                                                        <div className="font-extrabold text-sm text-[#181A20]">
+                                                        <div className="font-extrabold text-sm text-foreground">
                                                             {teacher.user.name}
                                                         </div>
-                                                        <div className="flex items-center gap-1.5 text-[11px] text-[#5A6272] mt-0.5">
-                                                            <FontAwesomeIcon icon={faIdCard} className="size-3 text-[#5A6272]" />
+                                                        <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground mt-0.5">
+                                                            <FontAwesomeIcon icon={faIdCard} className="size-3 text-muted-foreground" />
                                                             <span>NIP: {teacher.nip || '-'}</span>
                                                         </div>
                                                     </div>
@@ -251,27 +251,27 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="space-y-1 text-xs">
-                                                    <div className="flex items-center gap-2 text-[#181A20]">
-                                                        <FontAwesomeIcon icon={faEnvelope} className="size-3 text-[#5A6272]" />
+                                                    <div className="flex items-center gap-2 text-foreground">
+                                                        <FontAwesomeIcon icon={faEnvelope} className="size-3 text-muted-foreground" />
                                                         <span>{teacher.user.email}</span>
                                                     </div>
                                                     {teacher.phone && (
-                                                        <div className="flex items-center gap-2 text-[#5A6272]">
-                                                            <FontAwesomeIcon icon={faPhone} className="size-3 text-[#5A6272]" />
+                                                        <div className="flex items-center gap-2 text-muted-foreground">
+                                                            <FontAwesomeIcon icon={faPhone} className="size-3 text-muted-foreground" />
                                                             <span>{teacher.phone}</span>
                                                         </div>
                                                     )}
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <div className="flex items-start gap-2 max-w-xs text-xs text-[#5A6272]">
-                                                    <FontAwesomeIcon icon={faLocationDot} className="size-3 text-[#5A6272] mt-0.5 shrink-0" />
+                                                <div className="flex items-start gap-2 max-w-xs text-xs text-muted-foreground">
+                                                    <FontAwesomeIcon icon={faLocationDot} className="size-3 text-muted-foreground mt-0.5 shrink-0" />
                                                     <span className="line-clamp-2">{teacher.address || 'Belum diisi'}</span>
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 text-center">
-                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-[#F0F2F5] text-[#181A20]">
-                                                    <FontAwesomeIcon icon={faBriefcase} className="size-3 text-[#5A6272]" />
+                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-background text-foreground">
+                                                    <FontAwesomeIcon icon={faBriefcase} className="size-3 text-muted-foreground" />
                                                     {teacher.supervisor_assignments_count ?? 0} Kelompok
                                                 </span>
                                             </td>
@@ -281,7 +281,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                                                         <button
                                                             type="button"
                                                             onClick={() => openEditModal(teacher)}
-                                                            className="flex size-8 items-center justify-center rounded-lg border border-[#E9EBEF] text-[#5A6272] hover:bg-[#181A20] hover:text-[#D2F442] transition-colors cursor-pointer"
+                                                            className="flex size-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-primary hover:text-[#D2F442] transition-colors cursor-pointer"
                                                             title="Edit Data Guru"
                                                         >
                                                             <FontAwesomeIcon icon={faPenToSquare} className="size-3.5" />
@@ -289,7 +289,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                                                         <button
                                                             type="button"
                                                             onClick={() => handleDelete(teacher)}
-                                                            className="flex size-8 items-center justify-center rounded-lg border border-[#E9EBEF] text-[#5A6272] hover:bg-[#FF6B4A] hover:text-white transition-colors cursor-pointer"
+                                                            className="flex size-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-[#FF6B4A] hover:text-white transition-colors cursor-pointer"
                                                             title="Hapus Data Guru"
                                                         >
                                                             <FontAwesomeIcon icon={faTrash} className="size-3.5" />
@@ -306,8 +306,8 @@ export default function MasterTeachers({ teachers, filters }: Props) {
 
                     {/* Pagination */}
                     {teachers.last_page > 1 && (
-                        <div className="flex items-center justify-between p-4 border-t border-[#181A20]/8 bg-[#F6F7FA]/50 text-xs">
-                            <span className="text-[#5A6272] font-semibold">
+                        <div className="flex items-center justify-between p-4 border-t border-border bg-background/50 text-xs">
+                            <span className="text-muted-foreground font-semibold">
                                 Menampilkan {teachers.from ?? 0} - {teachers.to ?? 0} dari {teachers.total} data
                             </span>
                             <div className="flex items-center gap-1">
@@ -321,8 +321,8 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                                             link.active
                                                 ? 'bg-[#181A20] text-[#D2F442]'
                                                 : link.url
-                                                ? 'text-[#5A6272] hover:bg-white hover:text-[#181A20]'
-                                                : 'text-[#5A6272]/40 cursor-not-allowed'
+                                                ? 'text-muted-foreground hover:bg-card hover:text-foreground'
+                                                : 'text-muted-foreground/40 cursor-not-allowed'
                                         }`}
                                     />
                                 ))}
@@ -334,15 +334,15 @@ export default function MasterTeachers({ teachers, filters }: Props) {
 
             {/* MODAL TAMBAH / EDIT GURU */}
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-                <DialogContent className="sm:max-w-lg rounded-3xl bg-white p-6 border border-[#181A20]/10 shadow-2xl">
+                <DialogContent className="sm:max-w-lg rounded-3xl bg-card p-6 border border-border shadow-2xl">
                     <DialogHeader>
                         <div className="flex size-10 items-center justify-center rounded-2xl bg-[#181A20] text-[#D2F442] mb-2 font-black">
                             <FontAwesomeIcon icon={faUserCheck} className="size-4" />
                         </div>
-                        <DialogTitle className="text-xl font-black text-[#181A20]">
+                        <DialogTitle className="text-xl font-black text-foreground">
                             {editingTeacher ? 'Edit Data Guru Pembimbing' : 'Tambah Guru Pembimbing Baru'}
                         </DialogTitle>
-                        <DialogDescription className="text-xs font-medium text-[#5A6272]">
+                        <DialogDescription className="text-xs font-medium text-muted-foreground">
                             Akun login guru akan dibuat secara otomatis dengan role Guru Pembimbing.
                         </DialogDescription>
                     </DialogHeader>
@@ -350,7 +350,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                     <form onSubmit={handleSubmit} className="space-y-4 pt-2">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div className="sm:col-span-2">
-                                <Label htmlFor="teacher_name" className="text-xs font-bold text-[#181A20]">
+                                <Label htmlFor="teacher_name" className="text-xs font-bold text-foreground">
                                     Nama Lengkap Beserta Gelar <span className="text-[#FF6B4A]">*</span>
                                 </Label>
                                 <Input
@@ -359,7 +359,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                                     placeholder="Contoh: Budi Santoso, S.Kom."
                                     value={data.name}
                                     onChange={(e) => setData('name', e.target.value)}
-                                    className="mt-1.5 rounded-xl border-[#E9EBEF] text-xs font-semibold focus:border-[#181A20]"
+                                    className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                                     required
                                 />
                                 {errors.name && (
@@ -368,7 +368,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                             </div>
 
                             <div>
-                                <Label htmlFor="teacher_email" className="text-xs font-bold text-[#181A20]">
+                                <Label htmlFor="teacher_email" className="text-xs font-bold text-foreground">
                                     Email Akun Login <span className="text-[#FF6B4A]">*</span>
                                 </Label>
                                 <Input
@@ -377,7 +377,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                                     placeholder="nama@siarisa.sch.id"
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
-                                    className="mt-1.5 rounded-xl border-[#E9EBEF] text-xs font-semibold focus:border-[#181A20]"
+                                    className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                                     required
                                 />
                                 {errors.email && (
@@ -386,8 +386,8 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                             </div>
 
                             <div>
-                                <Label htmlFor="teacher_password" className="text-xs font-bold text-[#181A20]">
-                                    Password {editingTeacher && <span className="text-[#5A6272] font-normal">(opsional)</span>}
+                                <Label htmlFor="teacher_password" className="text-xs font-bold text-foreground">
+                                    Password {editingTeacher && <span className="text-muted-foreground font-normal">(opsional)</span>}
                                 </Label>
                                 <Input
                                     id="teacher_password"
@@ -395,7 +395,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                                     placeholder={editingTeacher ? 'Kosongkan jika tidak diganti' : 'Minimal 8 karakter (default: password)'}
                                     value={data.password}
                                     onChange={(e) => setData('password', e.target.value)}
-                                    className="mt-1.5 rounded-xl border-[#E9EBEF] text-xs font-semibold focus:border-[#181A20]"
+                                    className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                                 />
                                 {errors.password && (
                                     <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.password}</p>
@@ -403,7 +403,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                             </div>
 
                             <div>
-                                <Label htmlFor="teacher_nip" className="text-xs font-bold text-[#181A20]">
+                                <Label htmlFor="teacher_nip" className="text-xs font-bold text-foreground">
                                     NIP / No. Identitas Guru
                                 </Label>
                                 <Input
@@ -412,7 +412,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                                     placeholder="Contoh: 19880123 201101 1 002"
                                     value={data.nip}
                                     onChange={(e) => setData('nip', e.target.value)}
-                                    className="mt-1.5 rounded-xl border-[#E9EBEF] text-xs font-semibold focus:border-[#181A20]"
+                                    className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                                 />
                                 {errors.nip && (
                                     <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.nip}</p>
@@ -420,7 +420,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                             </div>
 
                             <div>
-                                <Label htmlFor="teacher_phone" className="text-xs font-bold text-[#181A20]">
+                                <Label htmlFor="teacher_phone" className="text-xs font-bold text-foreground">
                                     No. WhatsApp / Telepon
                                 </Label>
                                 <Input
@@ -429,7 +429,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                                     placeholder="Contoh: 08123456789"
                                     value={data.phone}
                                     onChange={(e) => setData('phone', e.target.value)}
-                                    className="mt-1.5 rounded-xl border-[#E9EBEF] text-xs font-semibold focus:border-[#181A20]"
+                                    className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                                 />
                                 {errors.phone && (
                                     <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.phone}</p>
@@ -437,7 +437,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                             </div>
 
                             <div className="sm:col-span-2">
-                                <Label htmlFor="teacher_address" className="text-xs font-bold text-[#181A20]">
+                                <Label htmlFor="teacher_address" className="text-xs font-bold text-foreground">
                                     Alamat Domisili
                                 </Label>
                                 <Input
@@ -446,7 +446,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                                     placeholder="Alamat domisili guru..."
                                     value={data.address}
                                     onChange={(e) => setData('address', e.target.value)}
-                                    className="mt-1.5 rounded-xl border-[#E9EBEF] text-xs font-semibold focus:border-[#181A20]"
+                                    className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                                 />
                                 {errors.address && (
                                     <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.address}</p>
@@ -458,7 +458,7 @@ export default function MasterTeachers({ teachers, filters }: Props) {
                             <button
                                 type="button"
                                 onClick={() => setIsModalOpen(false)}
-                                className="rounded-xl border border-[#E9EBEF] px-4 py-2 text-xs font-bold text-[#5A6272] hover:bg-[#F6F7FA] transition-colors cursor-pointer"
+                                className="rounded-xl border border-border px-4 py-2 text-xs font-bold text-muted-foreground hover:bg-background transition-colors cursor-pointer"
                             >
                                 Batal
                             </button>

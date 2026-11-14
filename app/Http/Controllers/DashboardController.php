@@ -13,6 +13,7 @@ use App\Models\PklApplication;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -27,8 +28,35 @@ class DashboardController extends Controller
         $recentApplications = [];
         $recentJournals = [];
         $myApplication = null;
+        $applicationTrend = ['labels' => [], 'values' => []];
+        $applicationStatuses = ['labels' => ['Diajukan', 'Disetujui', 'Ditolak'], 'values' => [0, 0, 0]];
 
         if ($user->hasRole('admin') || $user->hasRole('headmaster')) {
+            $endMonth = Carbon::now()->startOfMonth();
+            $startMonth = $endMonth->copy()->subMonths(5);
+            $months = collect(range(0, 5))->map(fn (int $offset) => $startMonth->copy()->addMonths($offset));
+            $monthlyCounts = PklApplication::query()
+                ->whereBetween('created_at', [$startMonth, $endMonth->copy()->endOfMonth()])
+                ->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as total')
+                ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+                ->get()
+                ->keyBy(fn ($row) => sprintf('%04d-%02d', $row->year, $row->month));
+            $applicationTrend = [
+                'labels' => $months->map(fn (Carbon $month) => $month->translatedFormat('M'))->all(),
+                'values' => $months->map(fn (Carbon $month) => (int) ($monthlyCounts->get($month->format('Y-m'))?->total ?? 0))->all(),
+            ];
+
+            $statusCounts = PklApplication::query()
+                ->when($activeYear, fn ($query) => $query->where('academic_year_id', $activeYear->id))
+                ->selectRaw('status, COUNT(*) as total')
+                ->groupBy('status')
+                ->pluck('total', 'status');
+            $applicationStatuses['values'] = [
+                (int) ($statusCounts->get(PklApplicationStatus::Submitted->value) ?? 0),
+                (int) ($statusCounts->get(PklApplicationStatus::Approved->value) ?? 0),
+                (int) ($statusCounts->get(PklApplicationStatus::Rejected->value) ?? 0),
+            ];
+
             $stats = [
                 'total_students' => Student::count(),
                 'total_industries' => Industry::where('is_active', true)->count(),
@@ -65,6 +93,8 @@ class DashboardController extends Controller
 
         return Inertia::render('dashboard', [
             'stats' => $stats,
+            'applicationTrend' => $applicationTrend,
+            'applicationStatuses' => $applicationStatuses,
             'recentApplications' => $recentApplications,
             'activeYear' => $activeYear ? [
                 'id' => $activeYear->id,
