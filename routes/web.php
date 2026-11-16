@@ -5,6 +5,7 @@ use App\Http\Controllers\Master\AcademicYearController;
 use App\Http\Controllers\Master\IndustryController;
 use App\Http\Controllers\Master\StudentController;
 use App\Http\Controllers\Master\TeacherController;
+use App\Http\Controllers\Pkl\PklApplicationController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
@@ -33,6 +34,15 @@ Route::middleware(['auth'])->group(function () {
         // Teachers & Students
         Route::resource('teachers', TeacherController::class)->except(['create', 'edit', 'show']);
         Route::resource('students', StudentController::class)->except(['create', 'edit', 'show']);
+    });
+
+    // Modul PKL (Praktik Kerja Lapangan)
+    Route::prefix('pkl')->name('pkl.')->group(function () {
+        Route::get('applications', [PklApplicationController::class, 'index'])->name('applications.index');
+        Route::post('applications', [PklApplicationController::class, 'store'])->name('applications.store');
+        Route::put('applications/{application}/verify', [PklApplicationController::class, 'verify'])->name('applications.verify');
+        Route::put('applications/{application}/assign-supervisors', [PklApplicationController::class, 'assignSupervisors'])->name('applications.assign-supervisors');
+        Route::delete('applications/{application}', [PklApplicationController::class, 'destroy'])->name('applications.destroy');
     });
 });
 

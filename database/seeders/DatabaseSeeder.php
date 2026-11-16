@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             ClassroomSeeder::class,
             TeacherSeeder::class,
             StudentSeeder::class,
+            IndustrySupervisorSeeder::class,
+            PklApplicationSeeder::class,
         ]);
     }
 }

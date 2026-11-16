@@ -30,22 +30,31 @@ class StoreAcademicYearRequest extends FormRequest
     /**
      * @return array<string, string>
      */
-    public function attributes(): array
-    {
-        return [
-            'name' => 'Tahun Ajaran',
-            'start_date' => 'Tanggal Mulai',
-            'end_date' => 'Tanggal Selesai',
-            'is_active' => 'Status Aktif',
-        ];
-    }
-
     public function messages(): array
     {
         return [
-            'name.required' => 'Tahun Ajaran Wajib Di Isi',
-            'start_date.required' => 'Tanggal Mulai Wajib di Isi',
-            'end_date.required' => 'Tanggal Selesai Wajib di Isi',
+            'name.required' => 'Nama tahun ajaran wajib diisi.',
+            'name.string' => 'Nama tahun ajaran harus berupa teks.',
+            'name.max' => 'Nama tahun ajaran maksimal 20 karakter.',
+            'name.unique' => 'Tahun ajaran ini sudah terdaftar.',
+            'start_date.required' => 'Tanggal mulai wajib diisi.',
+            'start_date.date' => 'Format tanggal mulai tidak valid.',
+            'end_date.required' => 'Tanggal selesai wajib diisi.',
+            'end_date.date' => 'Format tanggal selesai tidak valid.',
+            'end_date.after' => 'Tanggal selesai harus setelah tanggal mulai.',
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'name' => 'Nama Tahun Ajaran',
+            'start_date' => 'Tanggal Mulai',
+            'end_date' => 'Tanggal Selesai',
+            'is_active' => 'Status Aktif',
         ];
     }
 }
