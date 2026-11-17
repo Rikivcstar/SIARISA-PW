@@ -142,7 +142,7 @@ export function AppSidebar() {
     const pklStudentItems: NavItemWithBadge[] = [
         {
             title: 'Pengajuan Tempat PKL',
-            href: '/pkl/my-application',
+            href: '/pkl/applications',
             icon: faBriefcase,
         },
         {

@@ -204,7 +204,7 @@ const buttonClass = {
     primary:
         'rounded-2xl bg-[#181A20] px-6 py-2.5 text-sm font-extrabold text-[#D2F442] hover:bg-[#202229] active:scale-95 transition-all shadow-sm cursor-pointer',
     secondary:
-        'rounded-2xl border-2 border-[#E5E7EB] bg-white px-6 py-2.5 text-sm font-bold text-[#5A6272] hover:bg-[#F6F7FA] hover:border-[#D1D5DB] active:scale-95 transition-all cursor-pointer',
+        'rounded-2xl border-2 border-border bg-card px-6 py-2.5 text-sm font-bold text-muted-foreground hover:bg-muted/40 hover:border-border/80 active:scale-95 transition-all cursor-pointer',
     danger:
         'rounded-2xl bg-[#FF6B4A] px-6 py-2.5 text-sm font-extrabold text-white hover:bg-[#E55A3B] active:scale-95 transition-all shadow-sm cursor-pointer',
     welcome:
@@ -271,7 +271,7 @@ function AlertDialog({ options, onClose, visible }: AlertDialogProps) {
                     visible
                         ? 'scale-100 opacity-100 translate-y-0'
                         : 'scale-90 opacity-0 translate-y-4'
-                } ${isWelcome ? '' : 'rounded-3xl bg-white shadow-2xl'}`}
+                } ${isWelcome ? '' : 'rounded-3xl bg-card border border-border shadow-2xl'}`}
             >
                 {/* Welcome variant — dark card */}
                 {isWelcome ? (
@@ -343,7 +343,7 @@ function AlertDialog({ options, onClose, visible }: AlertDialogProps) {
                     </div>
                 ) : (
                     /* Standard card */
-                    <div className="relative overflow-hidden rounded-3xl bg-white shadow-2xl">
+                    <div className="relative overflow-hidden rounded-3xl bg-card shadow-2xl">
                         {/* Decorative blob background */}
                         <div
                             className="absolute -top-10 -right-10 h-32 w-32 rounded-full blur-3xl"
@@ -362,7 +362,7 @@ function AlertDialog({ options, onClose, visible }: AlertDialogProps) {
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="absolute right-4 top-4 z-10 flex size-7 items-center justify-center rounded-full bg-[#F6F7FA] text-[#5A6272] hover:bg-[#E5E7EB] transition-colors cursor-pointer"
+                                className="absolute right-4 top-4 z-10 flex size-7 items-center justify-center rounded-full bg-muted/60 text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
                             >
                                 <FontAwesomeIcon icon={faXmark} className="size-3" />
                             </button>
@@ -421,13 +421,13 @@ function AlertDialog({ options, onClose, visible }: AlertDialogProps) {
                             )}
 
                             {/* Title */}
-                            <h2 className="text-xl font-black text-[#181A20] mb-2 leading-tight">
+                            <h2 className="text-xl font-black text-foreground mb-2 leading-tight">
                                 {options.title}
                             </h2>
 
                             {/* Message */}
                             {options.message && (
-                                <p className="text-sm font-medium text-[#5A6272] leading-relaxed mb-6 max-w-xs mx-auto">
+                                <p className="text-sm font-medium text-muted-foreground leading-relaxed mb-6 max-w-xs mx-auto">
                                     {options.message}
                                 </p>
                             )}

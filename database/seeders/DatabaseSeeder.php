@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             IndustrySupervisorSeeder::class,
             PklApplicationSeeder::class,
+            AttendanceSeeder::class,
+            JournalSeeder::class,
         ]);
     }
 }

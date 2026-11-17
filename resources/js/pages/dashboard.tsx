@@ -116,8 +116,8 @@ export default function Dashboard({
     const getStatusPill = (status: string, label: string) => {
         if (status === 'approved') {
             return (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#D2F442]/30 px-3 py-1 text-xs font-bold text-[#181A20] border border-[#D2F442]">
-                    <span className="size-1.5 rounded-full bg-[#181A20]" />
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#D2F442]/20 px-3 py-1 text-xs font-bold text-[#181A20] dark:text-[#D2F442] border border-[#D2F442]/40">
+                    <span className="size-1.5 rounded-full bg-[#181A20] dark:bg-[#D2F442]" />
                     {label}
                 </span>
             );
@@ -479,7 +479,7 @@ export default function Dashboard({
                             <div className="mt-5">
                                 <Link
                                     href="/master/industries"
-                                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#D2F442] hover:bg-[#C4E835] px-4 py-2.5 text-sm font-extrabold text-[#181A20] transition-colors shadow-2xs"
+                                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#D2F442] hover:bg-[#C4E835] px-4 py-2.5 text-sm font-extrabold text-foreground transition-colors shadow-2xs"
                                 >
                                     <FontAwesomeIcon icon={faPlus} />
                                     <span>Buka Master DUDI</span>

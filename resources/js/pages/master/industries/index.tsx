@@ -328,8 +328,8 @@ export default function MasterIndustries({ industries, filters }: Props) {
 
                                             <td className="px-6 py-4 text-center whitespace-nowrap">
                                                 {item.is_active ? (
-                                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#D2F442]/30 px-3 py-1 text-xs font-bold text-foreground border border-[#D2F442]">
-                                                        <span className="size-1.5 rounded-full bg-[#181A20]" />
+                                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#D2F442]/20 px-3 py-1 text-xs font-bold text-foreground dark:text-[#D2F442] border border-[#D2F442]/40">
+                                                        <span className="size-1.5 rounded-full bg-foreground dark:bg-[#D2F442]" />
                                                         Aktif
                                                     </span>
                                                 ) : (
