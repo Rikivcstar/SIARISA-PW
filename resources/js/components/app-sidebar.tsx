@@ -217,11 +217,10 @@ export function AppSidebar() {
                             <Link href={item.href} prefetch>
                                 <FontAwesomeIcon
                                     icon={item.icon}
-                                    className={`size-4 shrink-0 transition-colors ${
-                                        active
-                                            ? 'text-[#16181D]'
-                                            : 'text-sidebar-foreground/70 group-hover/menu-button:text-sidebar-accent-foreground'
-                                    }`}
+                                    className={`size-4 shrink-0 transition-colors ${active
+                                        ? 'text-[#16181D]'
+                                        : 'text-sidebar-foreground/70 group-hover/menu-button:text-sidebar-accent-foreground'
+                                        }`}
                                 />
                                 <span>{item.title}</span>
                             </Link>
@@ -234,8 +233,8 @@ export function AppSidebar() {
                                     active
                                         ? 'bg-[#16181D]/15 text-[#16181D] font-bold'
                                         : item.badgeVariant === 'coral'
-                                          ? 'bg-[#FF6B4A] text-white font-bold'
-                                          : 'bg-sidebar-accent text-sidebar-foreground/70 font-semibold'
+                                            ? 'bg-[#FF6B4A] text-white font-bold'
+                                            : 'bg-sidebar-accent text-sidebar-foreground/70 font-semibold'
                                 }
                             >
                                 {item.badge}

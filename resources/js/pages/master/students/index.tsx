@@ -1,4 +1,4 @@
-import { Head, router, useForm, usePage } from '@inertiajs/react';
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import {
     faCheck,
     faCheckCircle,
@@ -15,9 +15,9 @@ import {
     faRotateRight,
     faTrash,
     faUserGraduate,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
 import {
     Dialog,
     DialogContent,
@@ -25,10 +25,10 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useSiarisaAlert } from '@/components/siarisa-alert';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useSiarisaAlert } from "@/components/siarisa-alert";
 
 interface UserData {
     id: number;
@@ -62,7 +62,7 @@ interface StudentItem {
     nisn: string | null;
     classroom_id: number | null;
     major_id: number;
-    status: 'active' | 'inactive' | 'graduated';
+    status: "active" | "inactive" | "graduated";
     phone: string | null;
     address: string | null;
     user: UserData;
@@ -109,45 +109,52 @@ export default function MasterStudents({
         auth: { user: { roles?: string[] } };
     };
 
-    const isAdmin = auth.user.roles?.includes('admin');
+    const isAdmin = auth.user.roles?.includes("admin");
     const alert = useSiarisaAlert();
 
-    const [searchQuery, setSearchQuery] = useState(filters.search || '');
-    const [selectedMajor, setSelectedMajor] = useState(String(filters.major_id || ''));
-    const [selectedClassroom, setSelectedClassroom] = useState(String(filters.classroom_id || ''));
-    const [selectedStatus, setSelectedStatus] = useState(filters.status || '');
+    const [searchQuery, setSearchQuery] = useState(filters.search || "");
+    const [selectedMajor, setSelectedMajor] = useState(
+        String(filters.major_id || ""),
+    );
+    const [selectedClassroom, setSelectedClassroom] = useState(
+        String(filters.classroom_id || ""),
+    );
+    const [selectedStatus, setSelectedStatus] = useState(filters.status || "");
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingStudent, setEditingStudent] = useState<StudentItem | null>(null);
+    const [editingStudent, setEditingStudent] = useState<StudentItem | null>(
+        null,
+    );
 
-    const { data, setData, post, put, processing, errors, reset, clearErrors } = useForm({
-        name: '',
-        email: '',
-        password: '',
-        nis: '',
-        nisn: '',
-        major_id: majors[0]?.id ? String(majors[0].id) : '',
-        classroom_id: '',
-        status: 'active',
-        phone: '',
-        address: '',
-    });
+    const { data, setData, post, put, processing, errors, reset, clearErrors } =
+        useForm({
+            name: "",
+            email: "",
+            password: "",
+            nis: "",
+            nisn: "",
+            major_id: majors[0]?.id ? String(majors[0].id) : "",
+            classroom_id: "",
+            status: "active",
+            phone: "",
+            address: "",
+        });
 
     const openCreateModal = () => {
         setEditingStudent(null);
         reset();
         clearErrors();
         setData({
-            name: '',
-            email: '',
-            password: '',
-            nis: '',
-            nisn: '',
-            major_id: majors[0]?.id ? String(majors[0].id) : '',
-            classroom_id: '',
-            status: 'active',
-            phone: '',
-            address: '',
+            name: "",
+            email: "",
+            password: "",
+            nis: "",
+            nisn: "",
+            major_id: majors[0]?.id ? String(majors[0].id) : "",
+            classroom_id: "",
+            status: "active",
+            phone: "",
+            address: "",
         });
         setIsModalOpen(true);
     };
@@ -158,14 +165,16 @@ export default function MasterStudents({
         setData({
             name: student.user.name,
             email: student.user.email,
-            password: '',
+            password: "",
             nis: student.nis,
-            nisn: student.nisn || '',
+            nisn: student.nisn || "",
             major_id: String(student.major_id),
-            classroom_id: student.classroom_id ? String(student.classroom_id) : '',
+            classroom_id: student.classroom_id
+                ? String(student.classroom_id)
+                : "",
             status: student.status,
-            phone: student.phone || '',
-            address: student.address || '',
+            phone: student.phone || "",
+            address: student.address || "",
         });
         setIsModalOpen(true);
     };
@@ -180,7 +189,7 @@ export default function MasterStudents({
                 },
             });
         } else {
-            post('/master/students', {
+            post("/master/students", {
                 onSuccess: () => {
                     setIsModalOpen(false);
                     reset();
@@ -191,7 +200,7 @@ export default function MasterStudents({
 
     const handleDelete = (student: StudentItem) => {
         alert.deleteConfirm(
-            'Hapus Data Siswa?',
+            "Hapus Data Siswa?",
             `Apakah Anda yakin ingin menghapus data siswa "${student.user.name}" (NIS: ${student.nis})? Akun portal siswa juga akan dihapus permanen.`,
             () => {
                 router.delete(`/master/students/${student.id}`);
@@ -202,23 +211,27 @@ export default function MasterStudents({
     const handleFilterSubmit = (e?: React.FormEvent) => {
         if (e) e.preventDefault();
         router.get(
-            '/master/students',
+            "/master/students",
             {
                 search: searchQuery,
                 major_id: selectedMajor,
                 classroom_id: selectedClassroom,
                 status: selectedStatus,
             },
-            { preserveState: true, replace: true }
+            { preserveState: true, replace: true },
         );
     };
 
     const handleResetFilters = () => {
-        setSearchQuery('');
-        setSelectedMajor('');
-        setSelectedClassroom('');
-        setSelectedStatus('');
-        router.get('/master/students', {}, { preserveState: true, replace: true });
+        setSearchQuery("");
+        setSelectedMajor("");
+        setSelectedClassroom("");
+        setSelectedStatus("");
+        router.get(
+            "/master/students",
+            {},
+            { preserveState: true, replace: true },
+        );
     };
 
     // Filter available classrooms inside modal based on selected major
@@ -237,14 +250,18 @@ export default function MasterStudents({
                     <div>
                         <div className="flex items-center gap-3">
                             <div className="flex size-10 items-center justify-center rounded-2xl bg-[#181A20] text-white">
-                                <FontAwesomeIcon icon={faUserGraduate} className="size-4" />
+                                <FontAwesomeIcon
+                                    icon={faUserGraduate}
+                                    className="size-4"
+                                />
                             </div>
                             <h1 className="text-2xl font-black tracking-tight text-foreground">
                                 Data Siswa PKL
                             </h1>
                         </div>
                         <p className="mt-1 text-sm font-medium text-muted-foreground">
-                            Kelola data pokok siswa SMK IT Ar-Risalah, pemetaan kelas rombel, dan akun portal.
+                            Kelola data pokok siswa SMK IT Ar-Risalah, pemetaan
+                            kelas rombel, dan akun portal.
                         </p>
                     </div>
 
@@ -254,7 +271,10 @@ export default function MasterStudents({
                             onClick={openCreateModal}
                             className="inline-flex items-center gap-2 rounded-2xl bg-[#181A20] px-4 py-2.5 text-xs md:text-sm font-extrabold text-[#D2F442] hover:bg-[#202229] transition-all shadow-xs cursor-pointer"
                         >
-                            <FontAwesomeIcon icon={faPlus} className="size-3.5" />
+                            <FontAwesomeIcon
+                                icon={faPlus}
+                                className="size-3.5"
+                            />
                             <span>Tambah Siswa</span>
                         </button>
                     )}
@@ -262,7 +282,10 @@ export default function MasterStudents({
 
                 {/* Filter and Search Bar */}
                 <div className="bg-card rounded-3xl p-5 border border-border shadow-xs space-y-4">
-                    <form onSubmit={handleFilterSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                    <form
+                        onSubmit={handleFilterSubmit}
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3"
+                    >
                         <div className="lg:col-span-2 relative">
                             <FontAwesomeIcon
                                 icon={faMagnifyingGlass}
@@ -280,7 +303,9 @@ export default function MasterStudents({
                         <div>
                             <select
                                 value={selectedMajor}
-                                onChange={(e) => setSelectedMajor(e.target.value)}
+                                onChange={(e) =>
+                                    setSelectedMajor(e.target.value)
+                                }
                                 className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground focus:border-ring focus:ring-0 cursor-pointer"
                             >
                                 <option value="">Semua Jurusan</option>
@@ -295,7 +320,9 @@ export default function MasterStudents({
                         <div>
                             <select
                                 value={selectedClassroom}
-                                onChange={(e) => setSelectedClassroom(e.target.value)}
+                                onChange={(e) =>
+                                    setSelectedClassroom(e.target.value)
+                                }
                                 className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground focus:border-ring focus:ring-0 cursor-pointer"
                             >
                                 <option value="">Semua Kelas</option>
@@ -310,7 +337,9 @@ export default function MasterStudents({
                         <div className="flex items-center gap-2">
                             <select
                                 value={selectedStatus}
-                                onChange={(e) => setSelectedStatus(e.target.value)}
+                                onChange={(e) =>
+                                    setSelectedStatus(e.target.value)
+                                }
                                 className="w-full rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground focus:border-ring focus:ring-0 cursor-pointer"
                             >
                                 <option value="">Semua Status</option>
@@ -324,7 +353,10 @@ export default function MasterStudents({
                                 className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#181A20] text-[#D2F442] hover:bg-[#202229] transition-colors cursor-pointer"
                                 title="Terapkan Filter"
                             >
-                                <FontAwesomeIcon icon={faFilter} className="size-3.5" />
+                                <FontAwesomeIcon
+                                    icon={faFilter}
+                                    className="size-3.5"
+                                />
                             </button>
 
                             <button
@@ -333,7 +365,10 @@ export default function MasterStudents({
                                 className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-border text-muted-foreground hover:bg-background transition-colors cursor-pointer"
                                 title="Reset Filter"
                             >
-                                <FontAwesomeIcon icon={faRotateRight} className="size-3.5" />
+                                <FontAwesomeIcon
+                                    icon={faRotateRight}
+                                    className="size-3.5"
+                                />
                             </button>
                         </div>
                     </form>
@@ -341,7 +376,9 @@ export default function MasterStudents({
                     <div className="flex items-center justify-between text-xs text-muted-foreground pt-1 border-t border-border">
                         <div className="flex items-center gap-2 font-semibold">
                             <span>Ditemukan:</span>
-                            <span className="font-extrabold text-foreground">{students.total}</span>
+                            <span className="font-extrabold text-foreground">
+                                {students.total}
+                            </span>
                             <span>Siswa</span>
                         </div>
                     </div>
@@ -353,38 +390,70 @@ export default function MasterStudents({
                         <table className="w-full text-left text-sm">
                             <thead>
                                 <tr className="border-b border-border bg-background/70 text-[11px] font-black uppercase tracking-wider text-muted-foreground">
-                                    <th className="px-6 py-4">Nama Siswa & NIS</th>
-                                    <th className="px-6 py-4">Kelas & Jurusan</th>
+                                    <th className="px-6 py-4">
+                                        Nama Siswa & NIS
+                                    </th>
+                                    <th className="px-6 py-4">
+                                        Kelas & Jurusan
+                                    </th>
                                     <th className="px-6 py-4">Kontak Siswa</th>
-                                    <th className="px-6 py-4 text-center">Status</th>
-                                    {isAdmin && <th className="px-6 py-4 text-right">Aksi</th>}
+                                    <th className="px-6 py-4 text-center">
+                                        Status
+                                    </th>
+                                    {isAdmin && (
+                                        <th className="px-6 py-4 text-right">
+                                            Aksi
+                                        </th>
+                                    )}
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border font-medium text-foreground">
                                 {students.data.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
-                                            Tidak ada data siswa ditemukan sesuai kriteria pencarian.
+                                        <td
+                                            colSpan={5}
+                                            className="px-6 py-12 text-center text-muted-foreground"
+                                        >
+                                            Tidak ada data siswa ditemukan
+                                            sesuai kriteria pencarian.
                                         </td>
                                     </tr>
                                 ) : (
                                     students.data.map((student) => (
-                                        <tr key={student.id} className="hover:bg-background/50 transition-colors">
+                                        <tr
+                                            key={student.id}
+                                            className="hover:bg-background/50 transition-colors"
+                                        >
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-3">
                                                     <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-[#181A20] text-[#D2F442] font-black">
-                                                        <FontAwesomeIcon icon={faUserGraduate} className="size-4" />
+                                                        <FontAwesomeIcon
+                                                            icon={
+                                                                faUserGraduate
+                                                            }
+                                                            className="size-4"
+                                                        />
                                                     </div>
                                                     <div>
                                                         <div className="font-extrabold text-sm text-foreground">
                                                             {student.user.name}
                                                         </div>
                                                         <div className="flex items-center gap-2 text-[11px] text-muted-foreground mt-0.5">
-                                                            <span className="font-bold text-foreground">NIS: {student.nis}</span>
+                                                            <span className="font-bold text-foreground">
+                                                                NIS:{" "}
+                                                                {student.nis}
+                                                            </span>
                                                             {student.nisn && (
                                                                 <>
-                                                                    <span>•</span>
-                                                                    <span>NISN: {student.nisn}</span>
+                                                                    <span>
+                                                                        •
+                                                                    </span>
+                                                                    <span>
+                                                                        NISN:{" "}
+                                                                        {
+                                                                            student.nisn
+                                                                        }
+                                                                    </span>
                                                                 </>
                                                             )}
                                                         </div>
@@ -394,14 +463,22 @@ export default function MasterStudents({
                                             <td className="px-6 py-4">
                                                 <div className="space-y-1">
                                                     <div className="font-extrabold text-xs text-foreground">
-                                                        {student.classroom?.name || 'Belum Ada Rombel'}
+                                                        {student.classroom
+                                                            ?.name ||
+                                                            "Belum Ada Rombel"}
                                                     </div>
                                                     <div className="flex items-center gap-1.5">
                                                         <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-[#D2F442] text-foreground dark:text-[#181A20]">
-                                                            {student.major?.code}
+                                                            {
+                                                                student.major
+                                                                    ?.code
+                                                            }
                                                         </span>
                                                         <span className="text-[11px] text-muted-foreground font-medium">
-                                                            {student.major?.name}
+                                                            {
+                                                                student.major
+                                                                    ?.name
+                                                            }
                                                         </span>
                                                     </div>
                                                 </div>
@@ -409,30 +486,46 @@ export default function MasterStudents({
                                             <td className="px-6 py-4">
                                                 <div className="space-y-1 text-xs">
                                                     <div className="flex items-center gap-2 text-foreground">
-                                                        <FontAwesomeIcon icon={faEnvelope} className="size-3 text-muted-foreground" />
-                                                        <span>{student.user.email}</span>
+                                                        <FontAwesomeIcon
+                                                            icon={faEnvelope}
+                                                            className="size-3 text-muted-foreground"
+                                                        />
+                                                        <span>
+                                                            {student.user.email}
+                                                        </span>
                                                     </div>
                                                     {student.phone && (
                                                         <div className="flex items-center gap-2 text-muted-foreground">
-                                                            <FontAwesomeIcon icon={faPhone} className="size-3 text-muted-foreground" />
-                                                            <span>{student.phone}</span>
+                                                            <FontAwesomeIcon
+                                                                icon={faPhone}
+                                                                className="size-3 text-muted-foreground"
+                                                            />
+                                                            <span>
+                                                                {student.phone}
+                                                            </span>
                                                         </div>
                                                     )}
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 text-center">
-                                                {student.status === 'active' && (
+                                                {student.status ===
+                                                    "active" && (
                                                     <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black bg-[#D2F442] text-foreground dark:text-[#181A20] shadow-2xs">
-                                                        <FontAwesomeIcon icon={faCheck} className="size-3" />
+                                                        <FontAwesomeIcon
+                                                            icon={faCheck}
+                                                            className="size-3"
+                                                        />
                                                         Aktif
                                                     </span>
                                                 )}
-                                                {student.status === 'inactive' && (
+                                                {student.status ===
+                                                    "inactive" && (
                                                     <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-background text-muted-foreground">
                                                         Nonaktif
                                                     </span>
                                                 )}
-                                                {student.status === 'graduated' && (
+                                                {student.status ===
+                                                    "graduated" && (
                                                     <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#181A20] text-white">
                                                         Lulus
                                                     </span>
@@ -443,19 +536,35 @@ export default function MasterStudents({
                                                     <div className="flex items-center justify-end gap-1.5">
                                                         <button
                                                             type="button"
-                                                            onClick={() => openEditModal(student)}
+                                                            onClick={() =>
+                                                                openEditModal(
+                                                                    student,
+                                                                )
+                                                            }
                                                             className="flex size-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-primary hover:text-[#D2F442] transition-colors cursor-pointer"
                                                             title="Edit Data Siswa"
                                                         >
-                                                            <FontAwesomeIcon icon={faPenToSquare} className="size-3.5" />
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    faPenToSquare
+                                                                }
+                                                                className="size-3.5"
+                                                            />
                                                         </button>
                                                         <button
                                                             type="button"
-                                                            onClick={() => handleDelete(student)}
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    student,
+                                                                )
+                                                            }
                                                             className="flex size-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-[#FF6B4A] hover:text-white transition-colors cursor-pointer"
                                                             title="Hapus Data Siswa"
                                                         >
-                                                            <FontAwesomeIcon icon={faTrash} className="size-3.5" />
+                                                            <FontAwesomeIcon
+                                                                icon={faTrash}
+                                                                className="size-3.5"
+                                                            />
                                                         </button>
                                                     </div>
                                                 </td>
@@ -471,21 +580,31 @@ export default function MasterStudents({
                     {students.last_page > 1 && (
                         <div className="flex items-center justify-between p-4 border-t border-border bg-background/50 text-xs">
                             <span className="text-muted-foreground font-semibold">
-                                Menampilkan {students.from ?? 0} - {students.to ?? 0} dari {students.total} siswa
+                                Menampilkan {students.from ?? 0} -{" "}
+                                {students.to ?? 0} dari {students.total} siswa
                             </span>
                             <div className="flex items-center gap-1">
                                 {students.links.map((link, idx) => (
                                     <button
                                         key={idx}
                                         disabled={!link.url}
-                                        onClick={() => link.url && router.get(link.url, {}, { preserveState: true })}
-                                        dangerouslySetInnerHTML={{ __html: link.label }}
+                                        onClick={() =>
+                                            link.url &&
+                                            router.get(
+                                                link.url,
+                                                {},
+                                                { preserveState: true },
+                                            )
+                                        }
+                                        dangerouslySetInnerHTML={{
+                                            __html: link.label,
+                                        }}
                                         className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
                                             link.active
-                                                ? 'bg-[#181A20] text-[#D2F442]'
+                                                ? "bg-[#181A20] text-[#D2F442]"
                                                 : link.url
-                                                ? 'text-muted-foreground hover:bg-card hover:text-foreground'
-                                                : 'text-muted-foreground/40 cursor-not-allowed'
+                                                  ? "text-muted-foreground hover:bg-card hover:text-foreground"
+                                                  : "text-muted-foreground/40 cursor-not-allowed"
                                         }`}
                                     />
                                 ))}
@@ -500,10 +619,15 @@ export default function MasterStudents({
                 <DialogContent className="sm:max-w-xl rounded-3xl bg-card p-6 border border-border shadow-2xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                         <div className="flex size-10 items-center justify-center rounded-2xl bg-[#181A20] text-[#D2F442] mb-2 font-black">
-                            <FontAwesomeIcon icon={faUserGraduate} className="size-4" />
+                            <FontAwesomeIcon
+                                icon={faUserGraduate}
+                                className="size-4"
+                            />
                         </div>
                         <DialogTitle className="text-xl font-black text-foreground">
-                            {editingStudent ? 'Edit Data Siswa' : 'Tambah Siswa Baru'}
+                            {editingStudent
+                                ? "Edit Data Siswa"
+                                : "Tambah Siswa Baru"}
                         </DialogTitle>
                         <DialogDescription className="text-xs font-medium text-muted-foreground">
                             Akun portal siswa dibuat otomatis dengan role Siswa.
@@ -513,78 +637,118 @@ export default function MasterStudents({
                     <form onSubmit={handleSubmit} className="space-y-4 pt-2">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div className="sm:col-span-2">
-                                <Label htmlFor="student_name" className="text-xs font-bold text-foreground">
-                                    Nama Lengkap Siswa <span className="text-[#FF6B4A]">*</span>
+                                <Label
+                                    htmlFor="student_name"
+                                    className="text-xs font-bold text-foreground"
+                                >
+                                    Nama Lengkap Siswa{" "}
+                                    <span className="text-[#FF6B4A]">*</span>
                                 </Label>
                                 <Input
                                     id="student_name"
                                     type="text"
                                     placeholder="Contoh: Muhammad Farhan"
                                     value={data.name}
-                                    onChange={(e) => setData('name', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("name", e.target.value)
+                                    }
                                     className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
-                                    required
                                 />
                                 {errors.name && (
-                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.name}</p>
+                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
+                                        {errors.name}
+                                    </p>
                                 )}
                             </div>
 
                             <div>
-                                <Label htmlFor="student_email" className="text-xs font-bold text-foreground">
-                                    Email Akun Siswa <span className="text-[#FF6B4A]">*</span>
+                                <Label
+                                    htmlFor="student_email"
+                                    className="text-xs font-bold text-foreground"
+                                >
+                                    Email Akun Siswa{" "}
+                                    <span className="text-[#FF6B4A]">*</span>
                                 </Label>
                                 <Input
                                     id="student_email"
                                     type="email"
                                     placeholder="farhan@siswa.siarisa.sch.id"
                                     value={data.email}
-                                    onChange={(e) => setData('email', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("email", e.target.value)
+                                    }
                                     className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
-                                    required
                                 />
                                 {errors.email && (
-                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.email}</p>
+                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
+                                        {errors.email}
+                                    </p>
                                 )}
                             </div>
 
                             <div>
-                                <Label htmlFor="student_password" className="text-xs font-bold text-foreground">
-                                    Password {editingStudent && <span className="text-muted-foreground font-normal">(opsional)</span>}
+                                <Label
+                                    htmlFor="student_password"
+                                    className="text-xs font-bold text-foreground"
+                                >
+                                    Password{" "}
+                                    {editingStudent && (
+                                        <span className="text-muted-foreground font-normal">
+                                            (opsional)
+                                        </span>
+                                    )}
                                 </Label>
                                 <Input
                                     id="student_password"
                                     type="password"
-                                    placeholder={editingStudent ? 'Kosongkan jika tidak diganti' : 'Minimal 8 karakter (default: password)'}
+                                    placeholder={
+                                        editingStudent
+                                            ? "Kosongkan jika tidak diganti"
+                                            : "Minimal 8 karakter (default: password)"
+                                    }
                                     value={data.password}
-                                    onChange={(e) => setData('password', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
                                     className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                                 />
                                 {errors.password && (
-                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.password}</p>
+                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
+                                        {errors.password}
+                                    </p>
                                 )}
                             </div>
 
                             <div>
-                                <Label htmlFor="student_nis" className="text-xs font-bold text-foreground">
-                                    NIS (Nomor Induk Siswa) <span className="text-[#FF6B4A]">*</span>
+                                <Label
+                                    htmlFor="student_nis"
+                                    className="text-xs font-bold text-foreground"
+                                >
+                                    NIS (Nomor Induk Siswa){" "}
+                                    <span className="text-[#FF6B4A]">*</span>
                                 </Label>
                                 <Input
                                     id="student_nis"
                                     type="text"
                                     placeholder="Contoh: 242510001"
                                     value={data.nis}
-                                    onChange={(e) => setData('nis', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("nis", e.target.value)
+                                    }
                                     className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
-                                    required
                                 />
                                 {errors.nis && (
-                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.nis}</p>
+                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
+                                        {errors.nis}
+                                    </p>
                                 )}
                             </div>
 
                             <div>
-                                <Label htmlFor="student_nisn" className="text-xs font-bold text-foreground">
+                                <Label
+                                    htmlFor="student_nisn"
+                                    className="text-xs font-bold text-foreground"
+                                >
                                     NISN (Nasional)
                                 </Label>
                                 <Input
@@ -592,24 +756,33 @@ export default function MasterStudents({
                                     type="text"
                                     placeholder="Contoh: 0071234567"
                                     value={data.nisn}
-                                    onChange={(e) => setData('nisn', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("nisn", e.target.value)
+                                    }
                                     className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                                 />
                                 {errors.nisn && (
-                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.nisn}</p>
+                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
+                                        {errors.nisn}
+                                    </p>
                                 )}
                             </div>
 
                             <div>
-                                <Label htmlFor="student_major_id" className="text-xs font-bold text-foreground">
-                                    Program Keahlian / Jurusan <span className="text-[#FF6B4A]">*</span>
+                                <Label
+                                    htmlFor="student_major_id"
+                                    className="text-xs font-bold text-foreground"
+                                >
+                                    Program Keahlian / Jurusan{" "}
+                                    <span className="text-[#FF6B4A]">*</span>
                                 </Label>
                                 <select
                                     id="student_major_id"
                                     value={data.major_id}
-                                    onChange={(e) => setData('major_id', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("major_id", e.target.value)
+                                    }
                                     className="mt-1.5 w-full rounded-xl border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground focus:border-ring focus:ring-0"
-                                    required
                                 >
                                     {majors.map((m) => (
                                         <option key={m.id} value={m.id}>
@@ -618,18 +791,25 @@ export default function MasterStudents({
                                     ))}
                                 </select>
                                 {errors.major_id && (
-                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.major_id}</p>
+                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
+                                        {errors.major_id}
+                                    </p>
                                 )}
                             </div>
 
                             <div>
-                                <Label htmlFor="student_classroom_id" className="text-xs font-bold text-foreground">
+                                <Label
+                                    htmlFor="student_classroom_id"
+                                    className="text-xs font-bold text-foreground"
+                                >
                                     Rombongan Belajar / Kelas
                                 </Label>
                                 <select
                                     id="student_classroom_id"
                                     value={data.classroom_id}
-                                    onChange={(e) => setData('classroom_id', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("classroom_id", e.target.value)
+                                    }
                                     className="mt-1.5 w-full rounded-xl border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground focus:border-ring focus:ring-0"
                                 >
                                     <option value="">-- Pilih Kelas --</option>
@@ -640,20 +820,27 @@ export default function MasterStudents({
                                     ))}
                                 </select>
                                 {errors.classroom_id && (
-                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.classroom_id}</p>
+                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
+                                        {errors.classroom_id}
+                                    </p>
                                 )}
                             </div>
 
                             <div>
-                                <Label htmlFor="student_status" className="text-xs font-bold text-foreground">
-                                    Status Siswa <span className="text-[#FF6B4A]">*</span>
+                                <Label
+                                    htmlFor="student_status"
+                                    className="text-xs font-bold text-foreground"
+                                >
+                                    Status Siswa{" "}
+                                    <span className="text-[#FF6B4A]">*</span>
                                 </Label>
                                 <select
                                     id="student_status"
                                     value={data.status}
-                                    onChange={(e) => setData('status', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("status", e.target.value)
+                                    }
                                     className="mt-1.5 w-full rounded-xl border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground focus:border-ring focus:ring-0"
-                                    required
                                 >
                                     <option value="active">Aktif</option>
                                     <option value="inactive">Nonaktif</option>
@@ -662,7 +849,10 @@ export default function MasterStudents({
                             </div>
 
                             <div>
-                                <Label htmlFor="student_phone" className="text-xs font-bold text-foreground">
+                                <Label
+                                    htmlFor="student_phone"
+                                    className="text-xs font-bold text-foreground"
+                                >
                                     No. WhatsApp / Telepon
                                 </Label>
                                 <Input
@@ -670,16 +860,23 @@ export default function MasterStudents({
                                     type="text"
                                     placeholder="Contoh: 085812345678"
                                     value={data.phone}
-                                    onChange={(e) => setData('phone', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("phone", e.target.value)
+                                    }
                                     className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                                 />
                                 {errors.phone && (
-                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.phone}</p>
+                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
+                                        {errors.phone}
+                                    </p>
                                 )}
                             </div>
 
                             <div className="sm:col-span-2">
-                                <Label htmlFor="student_address" className="text-xs font-bold text-foreground">
+                                <Label
+                                    htmlFor="student_address"
+                                    className="text-xs font-bold text-foreground"
+                                >
                                     Alamat Domisili Siswa
                                 </Label>
                                 <Input
@@ -687,11 +884,15 @@ export default function MasterStudents({
                                     type="text"
                                     placeholder="Contoh: Kp. Babakan, Desa Cariu, Kec. Cariu, Bogor"
                                     value={data.address}
-                                    onChange={(e) => setData('address', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("address", e.target.value)
+                                    }
                                     className="mt-1.5 rounded-xl border-border text-xs font-semibold focus:border-ring"
                                 />
                                 {errors.address && (
-                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">{errors.address}</p>
+                                    <p className="mt-1 text-xs text-[#FF6B4A] font-bold">
+                                        {errors.address}
+                                    </p>
                                 )}
                             </div>
                         </div>
@@ -709,7 +910,9 @@ export default function MasterStudents({
                                 disabled={processing}
                                 className="rounded-xl bg-[#181A20] px-4 py-2 text-xs font-extrabold text-[#D2F442] hover:bg-[#202229] transition-colors cursor-pointer"
                             >
-                                {processing ? 'Menyimpan...' : 'Simpan Data Siswa'}
+                                {processing
+                                    ? "Menyimpan..."
+                                    : "Simpan Data Siswa"}
                             </button>
                         </DialogFooter>
                     </form>
@@ -718,4 +921,3 @@ export default function MasterStudents({
         </>
     );
 }
-

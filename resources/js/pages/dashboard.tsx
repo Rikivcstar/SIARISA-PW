@@ -55,6 +55,7 @@ export default function Dashboard({
 }: DashboardProps) {
     const trendCanvas = useRef<HTMLCanvasElement>(null);
     const statusCanvas = useRef<HTMLCanvasElement>(null);
+    const weightingCanvas = useRef<HTMLCanvasElement>(null);
     const { auth, school } = usePage().props as {
         auth: { user: { name: string; roles?: string[] } };
         school?: { name: string; system_name: string };
@@ -62,6 +63,40 @@ export default function Dashboard({
 
     const roles = auth?.user?.roles ?? [];
     const isAdmin = roles.includes('admin') || roles.includes('headmaster');
+    const isStudent = roles.includes('student');
+    const isTeacher = roles.includes('teacher');
+    const isIndustrySupervisor = roles.includes('industry_supervisor');
+
+    useEffect(() => {
+        if (!weightingCanvas.current) return;
+
+        const chart = new Chart(weightingCanvas.current, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pembimbing Industri (DU/DI)', 'Guru Pembimbing Sekolah'],
+                datasets: [{
+                    data: [60, 40],
+                    backgroundColor: ['#D2F442', '#64748B'],
+                    borderColor: ['#D2F442', '#64748B'],
+                    borderWidth: 0,
+                    hoverOffset: 7,
+                    borderRadius: 5,
+                    spacing: 4,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '76%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: (context) => ` ${context.label}: ${context.parsed}%` } },
+                },
+            },
+        });
+
+        return () => chart.destroy();
+    }, []);
 
     useEffect(() => {
         if (!isAdmin || !trendCanvas.current || !statusCanvas.current) return;
@@ -81,10 +116,10 @@ export default function Dashboard({
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
+                plugins: { legend: { display: false }, tooltip: { displayColors: false } },
                 scales: {
-                    x: { grid: { display: false } },
-                    y: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } },
+                    x: { grid: { display: false }, ticks: { color: '#9CA3AF' } },
+                    y: { beginAtZero: true, ticks: { precision: 0, color: '#9CA3AF' }, grid: { color: 'rgba(148, 163, 184, 0.12)' }, border: { display: false } },
                 },
             },
         });
@@ -103,7 +138,7 @@ export default function Dashboard({
                 responsive: true,
                 maintainAspectRatio: false,
                 cutout: '70%',
-                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 18 } } },
+                plugins: { legend: { position: 'bottom', labels: { color: '#9CA3AF', usePointStyle: true, padding: 18 } } },
             },
         });
 
@@ -142,7 +177,7 @@ export default function Dashboard({
         <>
             <Head title="Dashboard - SIARISA" />
 
-            <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6">
+            <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-7">
                 {/* Top Header Row (Starter Kit Structure + Eduplex Style) */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
@@ -319,64 +354,52 @@ export default function Dashboard({
                     </section>
                 )}
 
-                {/* Middle Row: Progress Activity & Action Card */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* Activity & Bobot Penilaian (2 Columns) */}
-                    <div className="lg:col-span-2 space-y-6">
-                        {/* Card: Bobot Penilaian Resmi */}
-                        <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="flex size-9 items-center justify-center rounded-xl bg-[#D2F442] text-[#181A20]">
+                {/* Dashboard content adapts to every role while keeping the scoring standard visible. */}
+                <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+                    <div className="space-y-6 xl:col-span-2">
+                        <section className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xs" aria-labelledby="weighting-title">
+                            <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
+                                <div className="flex min-w-0 flex-1 items-center gap-3">
+                                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#D2F442] text-[#181A20]">
                                         <FontAwesomeIcon icon={faAward} className="size-4" />
                                     </div>
                                     <div>
-                                        <h2 className="text-base font-bold text-foreground">
-                                            Standar Bobot Penilaian PKL
-                                        </h2>
-                                        <p className="text-xs text-muted-foreground">
-                                            Formula resmi perhitungan nilai akhir kompetensi siswa
-                                        </p>
+                                        <h2 id="weighting-title" className="text-base font-bold text-foreground">Standar Bobot Penilaian PKL</h2>
+                                        <p className="mt-0.5 text-xs text-muted-foreground">Komposisi nilai akhir kompetensi siswa</p>
                                     </div>
                                 </div>
-                                <span className="rounded-full bg-muted px-3 py-1 text-xs font-bold text-foreground">
-                                    Sistem Otomatis
-                                </span>
+                                <span className="w-fit rounded-full bg-muted px-3 py-1 text-xs font-bold text-foreground">Formula 100%</span>
                             </div>
-
-                            <div className="space-y-4 pt-1">
-                                {/* Bar 1: DU/DI */}
-                                <div>
-                                    <div className="flex justify-between text-xs font-bold text-foreground mb-1.5">
-                                        <span>Pembimbing Industri (DU/DI)</span>
-                                        <span className="text-sm font-black">60%</span>
+                            <div className="grid items-center gap-6 border-t border-border bg-muted/20 p-5 sm:grid-cols-[minmax(150px,220px)_1fr] sm:p-6">
+                                <div className="relative mx-auto h-44 w-full max-w-[220px]">
+                                    <canvas ref={weightingCanvas} aria-label="Diagram bobot penilaian: pembimbing industri 60 persen dan guru pembimbing sekolah 40 persen" role="img" />
+                                    <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+                                        <span className="text-3xl font-black tracking-tight text-foreground">100%</span>
+                                        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Nilai Akhir</span>
                                     </div>
-                                    <div className="h-2.5 w-full rounded-full bg-muted overflow-hidden">
-                                        <div className="h-full bg-foreground rounded-full w-[60%]" />
-                                    </div>
-                                    <span className="text-[11px] text-muted-foreground mt-1 block">
-                                        Aspek: Disiplin, etos kerja, keterampilan teknis, dan jurnal kegiatan harian.
-                                    </span>
                                 </div>
-
-                                {/* Bar 2: Guru */}
-                                <div>
-                                    <div className="flex justify-between text-xs font-bold text-foreground mb-1.5">
-                                        <span>Guru Pembimbing Sekolah</span>
-                                        <span className="text-sm font-black">40%</span>
+                                <div className="space-y-4">
+                                    <div className="flex items-start gap-3">
+                                        <span className="mt-1.5 size-3 shrink-0 rounded-full bg-[#D2F442]" />
+                                        <div className="min-w-0 flex-1">
+                                            <div className="flex items-baseline justify-between gap-3"><h3 className="text-sm font-bold text-foreground">Pembimbing Industri (DU/DI)</h3><span className="text-xl font-black text-foreground">60%</span></div>
+                                            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Disiplin, etos kerja, keterampilan teknis, dan jurnal kegiatan harian.</p>
+                                        </div>
                                     </div>
-                                    <div className="h-2.5 w-full rounded-full bg-muted overflow-hidden">
-                                        <div className="h-full bg-[#D2F442] rounded-full w-[40%]" />
+                                    <div className="flex items-start gap-3">
+                                        <span className="mt-1.5 size-3 shrink-0 rounded-full bg-slate-500" />
+                                        <div className="min-w-0 flex-1">
+                                            <div className="flex items-baseline justify-between gap-3"><h3 className="text-sm font-bold text-foreground">Guru Pembimbing Sekolah</h3><span className="text-xl font-black text-foreground">40%</span></div>
+                                            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Monitoring kunjungan, kepatuhan bimbingan, dan laporan akhir PKL.</p>
+                                        </div>
                                     </div>
-                                    <span className="text-[11px] text-muted-foreground mt-1 block">
-                                        Aspek: Monitoring kunjungan, kepatuhan bimbingan, dan laporan akhir PKL.
-                                    </span>
+                                    <p className="border-t border-border pt-3 text-[11px] leading-relaxed text-muted-foreground">Nilai akhir dihitung otomatis dari gabungan penilaian kedua pembimbing.</p>
                                 </div>
                             </div>
-                        </div>
+                        </section>
 
                         {/* Recent Applications Table */}
-                        <div className="rounded-2xl border border-border bg-card shadow-2xs overflow-hidden">
+                        {isAdmin && <div className="rounded-2xl border border-border bg-card shadow-2xs overflow-hidden">
                             <div className="flex items-center justify-between border-b border-border p-5">
                                 <div>
                                     <h2 className="text-base font-bold text-foreground">
@@ -456,33 +479,32 @@ export default function Dashboard({
                                     </table>
                                 </div>
                             )}
-                        </div>
+                        </div>}
                     </div>
 
-                    {/* Right Column: Dark Action Card & Workflow */}
+                    {/* Role specific next step */}
                     <div className="space-y-6">
-                        {/* Dark Card: Direct Action Widget */}
-                        <div className="rounded-2xl bg-[#181A20] text-white p-6 shadow-sm relative overflow-hidden flex flex-col justify-between min-h-[200px]">
+                        <div className="rounded-2xl bg-[#181A20] text-white p-6 shadow-sm relative overflow-hidden flex flex-col justify-between min-h-[220px]">
                             <div>
                                 <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/90 mb-3 backdrop-blur-xs">
                                     <FontAwesomeIcon icon={faSchool} className="text-[#D2F442]" />
-                                    <span>SIARISA Core</span>
+                                    <span>{isAdmin ? 'SIARISA Core' : 'PKL Saya'}</span>
                                 </div>
                                 <h3 className="text-lg font-black text-white tracking-tight">
-                                    Kelola DUDI Mitra
+                                    {isAdmin ? 'Kelola DUDI Mitra' : isStudent ? 'Lanjutkan Kegiatan PKL' : isTeacher ? 'Pantau Siswa Bimbingan' : isIndustrySupervisor ? 'Pantau Siswa Industri' : 'Akses Kegiatan PKL'}
                                 </h3>
                                 <p className="text-xs text-[#8C93A0] mt-1.5 leading-relaxed">
-                                    Tambah dan verifikasi perusahaan mitra tempat pelaksanaan PKL siswa angkatan ini.
+                                    {isAdmin ? 'Tambah dan verifikasi perusahaan mitra tempat pelaksanaan PKL siswa angkatan ini.' : isStudent ? 'Kelola pengajuan, presensi, jurnal harian, dan hasil penilaian PKL Anda.' : isTeacher ? 'Lihat progres, validasi jurnal, dan berikan penilaian siswa bimbingan.' : isIndustrySupervisor ? 'Tinjau jurnal kegiatan dan berikan penilaian siswa di tempat PKL.' : 'Buka menu kegiatan untuk melihat informasi dan progres PKL.'}
                                 </p>
                             </div>
 
                             <div className="mt-5">
                                 <Link
-                                    href="/master/industries"
+                                    href={isAdmin ? '/master/industries' : isStudent ? '/pkl/applications' : isTeacher ? '/pkl/supervisor/students' : isIndustrySupervisor ? '/pkl/industry/students' : '/dashboard'}
                                     className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#D2F442] hover:bg-[#C4E835] px-4 py-2.5 text-sm font-extrabold text-foreground transition-colors shadow-2xs"
                                 >
                                     <FontAwesomeIcon icon={faPlus} />
-                                    <span>Buka Master DUDI</span>
+                                    <span>{isAdmin ? 'Buka Master DUDI' : isStudent ? 'Buka Pengajuan PKL' : 'Buka Kegiatan PKL'}</span>
                                 </Link>
                             </div>
                         </div>

@@ -104,12 +104,15 @@ class SupervisorJournalController extends Controller
             });
         }
 
-        $allKpi = (clone $kpiBaseQuery)->get();
+        $kpiCounts = (clone $kpiBaseQuery)
+            ->selectRaw('status, COUNT(*) as aggregate')
+            ->groupBy('status')
+            ->pluck('aggregate', 'status');
         $kpi = [
-            'total' => $allKpi->count(),
-            'pending' => $allKpi->where('status', JournalStatus::Pending)->count(),
-            'validated' => $allKpi->where('status', JournalStatus::Validated)->count(),
-            'rejected' => $allKpi->where('status', JournalStatus::Rejected)->count(),
+            'total' => (int) $kpiCounts->sum(),
+            'pending' => (int) ($kpiCounts[JournalStatus::Pending->value] ?? 0),
+            'validated' => (int) ($kpiCounts[JournalStatus::Validated->value] ?? 0),
+            'rejected' => (int) ($kpiCounts[JournalStatus::Rejected->value] ?? 0),
         ];
 
         $journals = $query->orderByDesc('date')

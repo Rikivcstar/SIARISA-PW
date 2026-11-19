@@ -13,6 +13,8 @@ use App\Models\Classroom;
 use App\Models\Industry;
 use App\Models\Major;
 use App\Models\PklApplication;
+use App\Models\Attendance;
+use App\Models\Journal;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -37,8 +39,17 @@ class PklMonitoringController extends Controller
                 'industry',
                 'supervisor.teacher.user',
                 'supervisor.industrySupervisor.user',
+            ])
+            ->withCount([
                 'attendances',
+                'attendances as present_attendances_count' => fn ($q) => $q->where('status', AttendanceStatus::Present),
+                'attendances as permission_attendances_count' => fn ($q) => $q->where('status', AttendanceStatus::Permission),
+                'attendances as sick_attendances_count' => fn ($q) => $q->where('status', AttendanceStatus::Sick),
+                'attendances as absent_attendances_count' => fn ($q) => $q->where('status', AttendanceStatus::Absent),
                 'journals',
+                'journals as validated_journals_count' => fn ($q) => $q->where('status', JournalStatus::Validated),
+                'journals as pending_journals_count' => fn ($q) => $q->where('status', JournalStatus::Pending),
+                'journals as rejected_journals_count' => fn ($q) => $q->where('status', JournalStatus::Rejected),
             ]);
 
         if ($activeYear) {
@@ -74,23 +85,14 @@ class PklMonitoringController extends Controller
         }
 
         // Global KPI Stats
-        $allApproved = (clone $query)->get();
-        $totalPlaced = $allApproved->count();
-
-        $totalAttendances = 0;
-        $totalPresent = 0;
-        $totalJournals = 0;
-        $totalPendingJournals = 0;
-
-        foreach ($allApproved as $app) {
-            $atts = $app->attendances;
-            $totalAttendances += $atts->count();
-            $totalPresent += $atts->where('status', AttendanceStatus::Present)->count();
-
-            $jns = $app->journals;
-            $totalJournals += $jns->count();
-            $totalPendingJournals += $jns->where('status', JournalStatus::Pending)->count();
-        }
+        $applicationIds = (clone $query)->reorder()->select('pkl_applications.id');
+        $totalPlaced = (clone $query)->count();
+        $attendanceStats = Attendance::query()->whereIn('pkl_application_id', $applicationIds)
+            ->selectRaw('COUNT(*) as total, SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as present', [AttendanceStatus::Present->value])->first();
+        $totalAttendances = (int) $attendanceStats->total;
+        $totalPresent = (int) $attendanceStats->present;
+        $journalStats = Journal::query()->whereIn('pkl_application_id', $applicationIds)
+            ->selectRaw('COUNT(*) as total, SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as pending', [JournalStatus::Pending->value])->first();
 
         $overallAttendanceRate = $totalAttendances > 0
             ? round(($totalPresent / $totalAttendances) * 100, 1)
@@ -99,20 +101,17 @@ class PklMonitoringController extends Controller
         $kpi = [
             'total_students' => $totalPlaced,
             'attendance_rate' => $overallAttendanceRate,
-            'total_journals' => $totalJournals,
-            'pending_journals' => $totalPendingJournals,
+            'total_journals' => (int) $journalStats->total,
+            'pending_journals' => (int) $journalStats->pending,
         ];
 
         // Paginated results with calculated per-student metrics
         $applications = $query->paginate(12)->withQueryString();
 
         $applications->getCollection()->transform(function (PklApplication $app) {
-            $atts = $app->attendances;
-            $totalAtt = $atts->count();
-            $presentCount = $atts->where('status', AttendanceStatus::Present)->count();
+            $totalAtt = $app->attendances_count;
+            $presentCount = $app->present_attendances_count;
             $rate = $totalAtt > 0 ? round(($presentCount / $totalAtt) * 100, 1) : 0;
-
-            $jns = $app->journals;
 
             return [
                 'id' => $app->id,
@@ -141,16 +140,16 @@ class PklMonitoringController extends Controller
                 'attendance_summary' => [
                     'total' => $totalAtt,
                     'present' => $presentCount,
-                    'permission' => $atts->where('status', AttendanceStatus::Permission)->count(),
-                    'sick' => $atts->where('status', AttendanceStatus::Sick)->count(),
-                    'absent' => $atts->where('status', AttendanceStatus::Absent)->count(),
+                    'permission' => $app->permission_attendances_count,
+                    'sick' => $app->sick_attendances_count,
+                    'absent' => $app->absent_attendances_count,
                     'rate' => $rate,
                 ],
                 'journal_summary' => [
-                    'total' => $jns->count(),
-                    'validated' => $jns->where('status', JournalStatus::Validated)->count(),
-                    'pending' => $jns->where('status', JournalStatus::Pending)->count(),
-                    'rejected' => $jns->where('status', JournalStatus::Rejected)->count(),
+                    'total' => $app->journals_count,
+                    'validated' => $app->validated_journals_count,
+                    'pending' => $app->pending_journals_count,
+                    'rejected' => $app->rejected_journals_count,
                 ],
             ];
         });

@@ -6,6 +6,7 @@ namespace App\Http\Requests\Master;
 
 use App\Models\Industry;
 use Illuminate\Foundation\Http\FormRequest;
+use Override;
 
 class StoreIndustryRequest extends FormRequest
 {
@@ -22,9 +23,9 @@ class StoreIndustryRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:150'],
             'address' => ['required', 'string'],
-            'city' => ['nullable', 'string', 'max:100'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'email' => ['nullable', 'email', 'max:100'],
+            'city' => ['required', 'string', 'max:100'],
+            'phone' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'email', 'max:100'],
             'contact_person' => ['nullable', 'string', 'max:100'],
             'contact_phone' => ['nullable', 'string', 'max:20'],
             'is_active' => ['nullable', 'boolean'],
@@ -48,12 +49,17 @@ class StoreIndustryRequest extends FormRequest
         ];
     }
 
-    public function message(): array
+    #[Override]
+    public function messages()
     {
-        return [
+          return [
             'name.required' => 'Kolom Nama indusrti wajib di isi',
             'address.required' => 'Kolom Alamat Wajib di isi',
             'city.required' => 'Kolom Kota/Kabupaten wajib di isi',
+            'phone.required' => 'kolom telepon wajib di isi',
+            'email.required' => 'kolom email wajib di isi',
         ];
     }
+
+
 }

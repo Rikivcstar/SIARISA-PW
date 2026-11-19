@@ -70,12 +70,16 @@ class AttendanceController extends Controller
                 ->withQueryString();
 
             // Statistik kehadiran akumulatif
-            $allLogs = Attendance::where('pkl_application_id', $application->id)->get();
-            $totalCount = $allLogs->count();
-            $presentCount = $allLogs->where('status', AttendanceStatus::Present)->count();
-            $permissionCount = $allLogs->where('status', AttendanceStatus::Permission)->count();
-            $sickCount = $allLogs->where('status', AttendanceStatus::Sick)->count();
-            $absentCount = $allLogs->where('status', AttendanceStatus::Absent)->count();
+            $attendanceCounts = Attendance::query()
+                ->where('pkl_application_id', $application->id)
+                ->selectRaw('status, COUNT(*) as aggregate')
+                ->groupBy('status')
+                ->pluck('aggregate', 'status');
+            $totalCount = (int) $attendanceCounts->sum();
+            $presentCount = (int) ($attendanceCounts[AttendanceStatus::Present->value] ?? 0);
+            $permissionCount = (int) ($attendanceCounts[AttendanceStatus::Permission->value] ?? 0);
+            $sickCount = (int) ($attendanceCounts[AttendanceStatus::Sick->value] ?? 0);
+            $absentCount = (int) ($attendanceCounts[AttendanceStatus::Absent->value] ?? 0);
 
             $stats = [
                 'total' => $totalCount,

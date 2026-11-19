@@ -69,12 +69,16 @@ class JournalController extends Controller
                 ->paginate(10)
                 ->withQueryString();
 
-            $allJournals = Journal::where('pkl_application_id', $application->id)->get();
+            $journalCounts = Journal::query()
+                ->where('pkl_application_id', $application->id)
+                ->selectRaw('status, COUNT(*) as aggregate')
+                ->groupBy('status')
+                ->pluck('aggregate', 'status');
             $stats = [
-                'total' => $allJournals->count(),
-                'validated' => $allJournals->where('status', JournalStatus::Validated)->count(),
-                'pending' => $allJournals->where('status', JournalStatus::Pending)->count(),
-                'rejected' => $allJournals->where('status', JournalStatus::Rejected)->count(),
+                'total' => (int) $journalCounts->sum(),
+                'validated' => (int) ($journalCounts[JournalStatus::Validated->value] ?? 0),
+                'pending' => (int) ($journalCounts[JournalStatus::Pending->value] ?? 0),
+                'rejected' => (int) ($journalCounts[JournalStatus::Rejected->value] ?? 0),
             ];
         }
 

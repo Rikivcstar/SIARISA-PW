@@ -6,6 +6,7 @@ namespace App\Http\Requests\Master;
 
 use App\Models\Student;
 use Illuminate\Foundation\Http\FormRequest;
+use Override;
 
 class StoreStudentRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class StoreStudentRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['nullable', 'string', 'min:8'],
+            'password' => ['required', 'string', 'min:8'],
             'nis' => ['required', 'string', 'max:20', 'unique:students,nis'],
             'nisn' => ['nullable', 'string', 'max:20', 'unique:students,nisn'],
             'classroom_id' => ['nullable', 'exists:classrooms,id'],
@@ -50,5 +51,20 @@ class StoreStudentRequest extends FormRequest
             'phone' => 'Nomor WhatsApp / Telepon',
             'address' => 'Alamat Domisili',
         ];
+    }
+
+    #[Override]
+    public function messages()
+    {
+        return
+        [
+        'name.required' => 'kolom nama tidak boleh kosong',
+        'email.required' => 'kolom email tidak boleh kosong',
+        'password.required' => 'kolom password tidak boleh kosong',
+        'nis.required' => 'kolom nis tidak boleh kosong',
+        'nisn.max' => 'nisn tidak boleh lebih dari 20 karakter',
+        'major_id.required' => 'data keahlian tidak boleh kosong'
+        ];
+
     }
 }
